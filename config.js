@@ -24,7 +24,7 @@ export const config = {
       accommodation: "Ostello Bello Firenze",
       description: "The departure point. Packed bags, passport checked, Interrail pass validated. Ready for the long journey north.",
       type: "outgoing",
-      featuredImage: "assets/placeholder-florence.jpg"
+      featuredImage: "assets/Firenze1.png"
     },
     {
       id: "copenhagen",
@@ -34,7 +34,7 @@ export const config = {
       accommodation: "Steel House Copenhagen",
       description: "Arrived after a scenic trans-European train connection. Rented cargo bikes, explored Nyhavn, and enjoyed cardamom buns.",
       type: "outgoing",
-      featuredImage: "assets/placeholder-copenhagen.jpg"
+      featuredImage: "assets/Copenhagen.jpg"
     },
     {
       id: "stockholm",
@@ -44,7 +44,7 @@ export const config = {
       accommodation: "Generator Stockholm",
       description: "Ferry rides across the archipelago, visited the Vasa Museum, walked the narrow streets of Gamla Stan. Cold breeze at sunset.",
       type: "outgoing",
-      featuredImage: "assets/placeholder-stockholm.jpg"
+      featuredImage: "assets/Stoccolma.jpg"
     },
     {
       id: "uppsala",
@@ -54,7 +54,7 @@ export const config = {
       accommodation: "CityStay Uppsala",
       description: "The northernmost point of the route — the U-Turn station. Visited the cathedral and university gardens. Beautiful, quiet college town vibe.",
       type: "u-turn",
-      featuredImage: "assets/placeholder-uppsala.jpg"
+      featuredImage: "assets/Uppsala.jpg"
     },
     {
       id: "hamburg",
@@ -64,7 +64,7 @@ export const config = {
       accommodation: "Superbude Altona",
       description: "Speicherstadt brick warehouses looked amazing at twilight. Visited Miniatur Wunderland. Great harbor vibes.",
       type: "return",
-      featuredImage: "assets/placeholder-hamburg.jpg"
+      featuredImage: "assets/Amburgo.webp"
     },
     {
       id: "munich",
@@ -74,7 +74,7 @@ export const config = {
       accommodation: "Wombat's City Hostel",
       description: "Marienplatz, the Englischer Garten, and surfers on the Eisbachwelle wave. A perfect final stop before heading home.",
       type: "return",
-      featuredImage: "assets/placeholder-munich.jpg"
+      featuredImage: "assets/Monaco.webp"
     },
     {
       id: "firenze-return",
@@ -84,7 +84,7 @@ export const config = {
       accommodation: "Home Sweet Home",
       description: "End of the loop. Exhausted but full of memories, rail tickets, and photos from across Northern Europe.",
       type: "return",
-      featuredImage: "assets/placeholder-return.jpg"
+      featuredImage: "assets/Firenze2.jpg"
     }
   ],
 
