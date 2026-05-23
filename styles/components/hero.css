@@ -1,0 +1,12 @@
+/* styles/components/hero.css - Hero Section styles */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+  padding: var(--spacing-xl);
+}

@@ -1,0 +1,6 @@
+/* styles/components/gallery.css - Gallery/Moodboard Section styles */
+.gallery-section {
+  position: relative;
+  background-color: var(--bg-primary);
+  padding: var(--spacing-2xl) 0;
+}

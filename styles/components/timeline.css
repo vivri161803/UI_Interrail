@@ -1,0 +1,6 @@
+/* styles/components/timeline.css - Route Timeline Section styles */
+.timeline-section {
+  position: relative;
+  background-color: var(--bg-secondary);
+  padding: var(--spacing-2xl) 0;
+}

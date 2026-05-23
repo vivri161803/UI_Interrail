@@ -1,0 +1,107 @@
+/* styles/main.css - Global Styles & Design System */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap');
+
+:root {
+  /* Harmonious Cold Nordic Palette */
+  --bg-primary: #0b0f19;      /* Deep midnight blue-gray */
+  --bg-secondary: #121824;    /* Slightly lighter dark background */
+  --bg-tertiary: #1b2336;     /* Elevated surface elements */
+  
+  --text-primary: #f3f4f6;    /* Crisp near-white */
+  --text-secondary: #9ca3af;  /* Muted cool gray */
+  --text-muted: #6b7280;      /* Darker gray for placeholders/labels */
+  
+  --accent-primary: #3b82f6;  /* Arctic blue */
+  --accent-secondary: #60a5fa;/* Muted light blue */
+  --accent-glow: rgba(59, 130, 246, 0.15); /* Soft blue glow */
+  
+  /* Layout & Spacing System */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --spacing-2xl: 5rem;
+  
+  /* Typography Scale */
+  --font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-xs: 0.75rem;
+  --font-sm: 0.875rem;
+  --font-md: 1rem;
+  --font-lg: 1.25rem;
+  --font-xl: 1.5rem;
+  --font-2xl: 2.25rem;
+  --font-3xl: 3.5rem;
+  --font-huge: 5rem;
+  
+  /* Borders & Shadows */
+  --border-radius-sm: 6px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 24px;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+  --glass-effect: backdrop-filter: blur(12px) saturate(180%);
+}
+
+/* Reset & Base Styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Base Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: var(--border-radius-sm);
+  border: 2px solid var(--bg-primary);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
+
+/* Layout Utilities */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.section-padding {
+  padding: var(--spacing-2xl) 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
