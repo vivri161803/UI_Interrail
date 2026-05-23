@@ -1,6 +1,191 @@
-/* styles/components/timeline.css - Route Timeline Section styles */
-.timeline-section {
+/* styles/components/timeline.css - Route Timeline Section Styles */
+
+.timeline-container {
   position: relative;
-  background-color: var(--bg-secondary);
-  padding: var(--spacing-2xl) 0;
+  width: 100%;
+  max-width: 800px;
+  margin: 4rem auto 0 auto;
+  height: 2500px; /* Matching SVG viewBox height */
+}
+
+.timeline-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+#active-track {
+  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.4));
+}
+
+.timeline-cards-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Station Card Styling */
+.station-card {
+  position: absolute;
+  width: 320px;
+  z-index: 10;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--box-shadow);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform, opacity, filter;
+}
+
+.station-card:hover {
+  border-color: var(--accent-secondary);
+  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.1);
+}
+
+/* Timeline Station Node Indicator (Small circle next to track) */
+.station-node {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background-color: var(--bg-primary);
+  border: 3px solid var(--accent-primary);
+  border-radius: 50%;
+  z-index: 12;
+  transform: translate(-50%, -50%);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.station-node.active {
+  background-color: var(--accent-secondary);
+  box-shadow: 0 0 12px var(--accent-primary);
+}
+
+/* Station Alignments on Desktop */
+.station-card.outgoing {
+  left: 260px; /* Placed to the right of the left track at x=200 */
+}
+
+.station-card.return {
+  right: 260px; /* Placed to the left of the right track at x=600 */
+}
+
+.station-card.u-turn {
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  text-align: center;
+  border-color: rgba(96, 165, 250, 0.2);
+}
+
+/* Station Card Elements */
+.station-badge {
+  display: inline-block;
+  font-size: var(--font-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent-secondary);
+  letter-spacing: 0.1em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.station-city {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.station-country {
+  font-size: var(--font-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-sm);
+}
+
+.station-date {
+  font-size: var(--font-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.station-date::before {
+  content: '📅';
+  font-size: 1rem;
+}
+
+.station-accommodation {
+  font-size: var(--font-sm);
+  background-color: rgba(255, 255, 255, 0.03);
+  padding: 6px 10px;
+  border-radius: var(--border-radius-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
+  border-left: 3px solid var(--accent-primary);
+  text-align: left;
+}
+
+.station-notes {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* RESPONSIVE LAYOUT FOR MOBILE (< 768px) */
+@media (max-width: 768px) {
+  .timeline-container {
+    height: auto !important;
+    padding-left: var(--spacing-lg);
+    margin-top: 2rem;
+  }
+  
+  .timeline-svg {
+    left: 20px;
+    width: 6px;
+    height: 100%;
+    transform: none;
+  }
+  
+  .track-bg, #active-track {
+    d: path("M 3 0 L 3 10000") !important; /* SVG path becomes straight vertical */
+  }
+  
+  .timeline-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    padding-bottom: var(--spacing-xl);
+  }
+  
+  .station-card {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    text-align: left !important;
+  }
+  
+  .station-node {
+    left: 20px !important;
+    /* top will be synced relative to card offset dynamically in JS */
+  }
+  
+  .station-card.u-turn {
+    text-align: left !important;
+  }
+  
+  .station-accommodation {
+    text-align: left !important;
+  }
 }

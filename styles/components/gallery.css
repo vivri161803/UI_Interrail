@@ -1,6 +1,118 @@
-/* styles/components/gallery.css - Gallery/Moodboard Section styles */
-.gallery-section {
+/* styles/components/gallery.css - Gallery/Moodboard Section Styles */
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+  margin-top: 3rem;
+}
+
+.gallery-item {
   position: relative;
-  background-color: var(--bg-primary);
-  padding: var(--spacing-2xl) 0;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.gallery-item:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent-secondary);
+  box-shadow: 0 12px 40px rgba(59, 130, 246, 0.15);
+}
+
+/* Image Placeholder (using a modern CSS gradient/solid block) */
+.gallery-image-placeholder {
+  width: 100%;
+  aspect-ratio: 16/10;
+  background: linear-gradient(135deg, #1f293d 0%, #111827 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.3s ease;
+}
+
+.gallery-item:hover .gallery-image-placeholder {
+  background: linear-gradient(135deg, #273552 0%, #162035 100%);
+}
+
+/* Icon / Graphic overlaying the placeholder */
+.gallery-image-placeholder::before {
+  content: '📸';
+  font-size: 2rem;
+  opacity: 0.25;
+  transition: transform 0.4s ease, opacity 0.3s ease;
+}
+
+.gallery-item:hover .gallery-image-placeholder::before {
+  transform: scale(1.1) rotate(-5deg);
+  opacity: 0.6;
+}
+
+/* Bottom shadow vignette for placeholder text readability */
+.gallery-image-placeholder::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(to top, rgba(11, 15, 25, 0.8), transparent);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .gallery-image-placeholder::after {
+  opacity: 1;
+}
+
+.gallery-info {
+  padding: var(--spacing-md);
+}
+
+.gallery-item-title {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+  transition: color 0.3s ease;
+}
+
+.gallery-item:hover .gallery-item-title {
+  color: var(--accent-secondary);
+}
+
+.gallery-item-description {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Add custom image upload overlay indicator (for the README documentation help) */
+.gallery-upload-tip {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(11, 15, 25, 0.85);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: var(--border-radius-sm);
+  pointer-events: none;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.gallery-item:hover .gallery-upload-tip {
+  color: var(--accent-secondary);
+  border-color: var(--accent-primary);
 }

@@ -29,9 +29,18 @@
       <!-- Itinerary Timeline Section -->
       <section id="itinerary" class="timeline-section section-padding">
         <div class="container">
-          <h2 id="itinerary-title">The Route</h2>
-          <div class="timeline-wrapper">
-            <!-- Timeline SVG track will be drawn here -->
+          <h2 id="itinerary-title" class="section-title">The Journey</h2>
+          
+          <div class="timeline-container">
+            <!-- Serpentine SVG track -->
+            <svg class="timeline-svg" viewBox="0 0 800 2500" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="track-bg" d="M 200 100 L 200 1050 C 200 1250, 600 1200, 600 1400 L 600 2350" stroke="rgba(255, 255, 255, 0.05)" stroke-width="6" stroke-linecap="round" />
+              <path id="active-track" d="M 200 100 L 200 1050 C 200 1250, 600 1200, 600 1400 L 600 2350" stroke="var(--accent-primary)" stroke-width="6" stroke-linecap="round" />
+            </svg>
+            
+            <div id="timeline-cards" class="timeline-cards-container">
+              <!-- Dynamically hydrated from config.js -->
+            </div>
           </div>
         </div>
       </section>
@@ -39,9 +48,9 @@
       <!-- Gallery / Moodboard Section -->
       <section id="gallery" class="gallery-section section-padding">
         <div class="container">
-          <h2 id="gallery-title">Gallery & Moodboard</h2>
-          <div class="gallery-grid">
-            <!-- Gallery items -->
+          <h2 id="gallery-title" class="section-title">Gallery & Moodboard</h2>
+          <div id="gallery-grid" class="gallery-grid">
+            <!-- Dynamically hydrated from config.js -->
           </div>
         </div>
       </section>
@@ -49,9 +58,9 @@
       <!-- Packing List Section -->
       <section id="packing" class="packing-section section-padding">
         <div class="container">
-          <h2 id="packing-title">Packing List</h2>
-          <div id="packing-list-root">
-            <!-- Interactive packing list -->
+          <h2 id="packing-title" class="section-title">Packing Checklist</h2>
+          <div id="packing-list-root" class="packing-grid">
+            <!-- Dynamically hydrated from config.js -->
           </div>
         </div>
       </section>

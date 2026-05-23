@@ -15,19 +15,21 @@ This roadmap divides the development into five distinct phases, following a stri
 - [x] Implement component scaffolding (create JS placeholder modules and CSS files).
 
 ## Phase 2: Static Component Layouts (Layering)
-- [ ] **Hero Section:** Title layout, subheadings, and layout background.
-- [ ] **Itinerario (Timeline):** Vertical train track line design and stop blocks (Oslo, Stoccolma, Copenhagen, etc.).
-- [ ] **Galleria/Moodboard:** Beautiful CSS Grid/Flexbox photogallery with hover scales and descriptions.
-- [ ] **Packing List:** Clean layout with checklist items categorized (Essentials, Tech, Clothing).
-- [ ] **Footer:** Clean minimalism, credits, and links.
+- [x] **Hero Section:** Title layout, subheadings, and layout background.
+- [x] **Itinerario (Timeline):** Vertical train track line design and stop blocks (Oslo, Stoccolma, Copenhagen, etc.).
+- [x] **Galleria/Moodboard:** Beautiful CSS Grid/Flexbox photogallery with hover scales and descriptions.
+- [x] **Packing List:** Clean layout with checklist items categorized (Essentials, Tech, Clothing).
+- [x] **Footer:** Clean minimalism, credits, and links.
 
 ## Phase 3: Interactive JS Logic
-- [ ] Implement local state for the Packing List (checking/unchecking items with persistent state via localStorage).
-- [ ] Inject route timeline data dynamically using JS config parameters to make the components easily editable.
+- [x] Implement local state for the Packing List (checking/unchecking items with persistent state via localStorage).
+- [x] Inject route timeline data dynamically using JS config parameters to make the components easily editable.
 
 ## Phase 4: GSAP Animation & Wow Factor
-- [ ] **Hero Reveal:** Custom JS letter-splitting utility + GSAP timeline for a staggered masked reveal of "Interrail 2026".
-- [ ] **Timeline ScrollTrigger:** 
+- [x] **Hero Reveal:** Custom JS letter-splitting utility + GSAP timeline for a staggered masked reveal of "Interrail 2026".
+- [x] **Timeline ScrollTrigger:** 
+- [x] **Gallery Hover/Parallax:** Add smooth, micro-animated image movements and hover animations.
+- [x] **Marquee Parallax:** Horizontal running marquee of train numbers/schedules in the background, accelerating with page scroll speed.
 
 ### 1. Technical Stack Constraints
 - **Environment:** Vite + Vanilla JS (ES Modules).
@@ -55,9 +57,6 @@ Implement the drawing effect without paid plugins using the SVG Stroke Dash tric
 3. **The Station Reveal (Blur & Fade):**
    - Each station's text/card must be initially hidden (opacity: 0, filter: blur(10px)).
    - Sync the timeline so that exactly when the tip of the drawing SVG line reaches a station's vertical coordinate, that specific station card triggers its reveal animation: animating to `opacity: 1` and `filter: blur(0px)` with a smooth ease (e.g., `power2.out`).
-
-- [ ] **Gallery Hover/Parallax:** Add smooth, micro-animated image movements and hover animations.
-- [ ] **Marquee Parallax:** Horizontal running marquee of train numbers/schedules in the background, accelerating with page scroll speed.
 
 ## Phase 5: Testing, Polish & Deployment
 Using Safari as a browser:

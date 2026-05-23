@@ -1,7 +1,32 @@
-/* styles/components/footer.css - Footer Section styles */
+/* styles/components/footer.css - Footer Section Styles */
+
 .footer {
-  position: relative;
   background-color: var(--bg-primary);
-  padding: var(--spacing-xl) 0;
   border-top: 1px solid var(--border-color);
+  padding: var(--spacing-xl) 0;
+  text-align: center;
+  margin-top: 4rem;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.footer-text {
+  font-size: var(--font-xs);
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.footer-link {
+  font-size: var(--font-xs);
+  color: var(--accent-secondary);
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: var(--text-primary);
 }
