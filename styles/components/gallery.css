@@ -86,14 +86,19 @@
   border-color: var(--accent-secondary);
 }
 
+/* Uniform crop — same size regardless of original photo dimensions */
 .album-photo-item img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover;        /* crop to fill, never distort */
+  object-position: center;
   display: block;
+  z-index: 1;
 }
 
-/* Placeholder icon + filename shown when no image is present */
+/* Placeholder icon + filename shown when no image has loaded */
 .album-photo-placeholder {
   position: absolute;
   inset: 0;
@@ -103,6 +108,7 @@
   justify-content: center;
   gap: 6px;
   padding: 8px;
+  z-index: 0;           /* behind the img */
 }
 
 .album-photo-placeholder::before {
@@ -119,6 +125,10 @@
   line-height: 1.3;
   word-break: break-all;
 }
+
+/* Hide the placeholder entirely when a real image is present */
+.album-photo-item:has(img)::before         { display: none; }
+.album-photo-item:has(img) .album-photo-placeholder { display: none; }
 
 /* ── Navigation hint bar at the bottom ───────────────────────────── */
 .gallery-nav-hint {

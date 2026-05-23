@@ -27,9 +27,11 @@ export function initGallerySection() {
     const indexStr = String(index + 1).padStart(2, '0');
     const totalStr = String(albums.length).padStart(2, '0');
 
-    // Build photo grid HTML
+    // Build photo grid HTML — always renders a real <img>.
+    // Placeholder text/icon is hidden via CSS :has(img) once the image loads.
     const gridItems = photos.map(path => `
         <div class="album-photo-item">
+          <img src="${path}" alt="${album.cityName}" loading="lazy" />
           <div class="album-photo-placeholder">
             <span class="album-photo-filename">${path}</span>
           </div>
