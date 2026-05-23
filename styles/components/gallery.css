@@ -146,3 +146,20 @@
   z-index: 100;
 }
 .gallery-nav-hint.visible { opacity: 0.45; }
+
+/* ── Mobile ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .gallery-album {
+    padding: 6rem var(--spacing-lg) var(--spacing-xl);
+  }
+
+  .gallery-album-index {
+    left: var(--spacing-lg);
+  }
+
+  .album-photo-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
+    max-height: 65vh; /* allow a bit more height on mobile */
+  }
+}
