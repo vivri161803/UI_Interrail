@@ -36,7 +36,7 @@ export function initRouteTimeline() {
     const imageColHtml = `
       <div class="station-image-column">
         <div class="station-image-box">
-          <span class="station-image-hint">${station.featuredImage}</span>
+          <img src="${station.featuredImage}" alt="${station.cityName}" />
         </div>
       </div>`;
 
@@ -58,7 +58,7 @@ export function initRouteTimeline() {
 }
 
 function badgeLabel(type) {
-  if (type === 'u-turn')   return '↩ U-Turn Station';
-  if (type === 'return')   return '← Return Trip';
+  if (type === 'u-turn') return '↩ U-Turn Station';
+  if (type === 'return') return '← Return Trip';
   return '→ Outgoing Trip';
 }
