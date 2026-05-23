@@ -28,25 +28,25 @@ Ogni oggetto nell'array `stations` genera una **scheda stazione** sulla serpenti
 ```js
 stations: [
   {
-    id: "firenze",          // ID univoco (non modificare, serve come ancoraggio)
+    id: "firenze",          // ID univoco — NON modificare
     cityName: "Florence",   // ← Nome della città visualizzato sulla scheda
     country: "Italy",       // ← Paese visualizzato sotto il nome
-    date: "August 1–2, 2026",          // ← Date del soggiorno
+    date: "August 1–2, 2026",              // ← Date del soggiorno
     accommodation: "Ostello Bello Firenze", // ← Nome dell'ostello/hotel
     description: "...",     // ← Diario di bordo: cosa hai visto e vissuto
     type: "outgoing",       // NON modificare: "outgoing" | "u-turn" | "return"
-    featuredImage: "assets/placeholder-florence.jpg" // ← vedi sezione 4 ↓
+    featuredImage: "assets/Firenze1.png"   // ← vedi sezione 4 ↓
   },
   // ... altre stazioni
 ]
 ```
 
 **Cosa puoi modificare liberamente:**
-- `cityName`, `country`, `date`, `accommodation`, `description` → aggiorna pure con i tuoi dati reali
-- `featuredImage` → percorso relativo alla foto che vuoi mostrare accanto alla scheda (vedi sezione 4)
+- `cityName`, `country`, `date`, `accommodation`, `description` → aggiorna con i tuoi dati reali
+- `featuredImage` → percorso della foto da mostrare nella scheda (vedi sezione 4)
 
 **Non modificare:**
-- `id` e `type` — determinano la posizione sulla curva a S e non vanno cambiati
+- `id` e `type` — determinano la posizione sulla curva a S
 
 ---
 
@@ -74,25 +74,27 @@ albums: [
 
 ### 4. Come aggiungere le tue foto
 
-**Foto dell'album (galleria):**
-1. Copia le foto nella cartella **`assets/`** nella root del progetto
-2. Rinominale in modo descrittivo (es. `florence-01.jpg`, `stockholm-03.jpg`)
-3. Aggiorna i percorsi nell'array `photoPaths` dell'album corrispondente in `config.js`
-4. Il sito le caricherà automaticamente — nessun altro file da toccare
+> ⚠️ **Tutte le foto devono stare in `public/assets/`** (non nella cartella `assets/` alla root).
+> Questa è la cartella che Vite include nel build di produzione e che Vercel pubblica online.
 
 **Foto accanto alle stazioni (timeline):**
-1. Copia la foto in **`assets/`** (es. `firenze-hero.jpg`)
-2. In `config.js`, trova la stazione corrispondente e aggiorna il campo `featuredImage`:
+1. Copia la foto in **`public/assets/`** (es. `public/assets/firenze-hero.jpg`)
+2. In `config.js`, aggiorna il campo `featuredImage` della stazione corrispondente:
    ```js
    featuredImage: "assets/firenze-hero.jpg"
    ```
-3. Poi in **`components/RouteTimeline.js`**, trova il blocco `imageColHtml` e sostituisci il contenuto del `.station-image-box` con un tag `<img>` reale:
+   *(il prefisso `assets/` è sufficiente — Vite risolve il percorso da `public/` automaticamente)*
+
+**Foto degli album (galleria orizzontale):**
+1. Copia le foto in **`public/assets/`** con nomi descrittivi (es. `florence-01.jpg`, `stockholm-03.jpg`)
+2. In `config.js`, aggiorna l'array `photoPaths` dell'album corrispondente:
    ```js
-   // Sostituisci questa riga:
-   <span class="station-image-hint">${station.featuredImage}</span>
-   // Con questa:
-   <img src="${station.featuredImage}" alt="${station.cityName}" />
+   photoPaths: [
+     "assets/florence-01.jpg",
+     "assets/florence-02.jpg",
+   ]
    ```
+3. Il sito le carica e le visualizza automaticamente, uniformemente ridimensionate — nessun altro file da modificare
 
 ---
 
@@ -101,7 +103,7 @@ albums: [
 ```bash
 npm install       # solo la prima volta
 npm run dev       # server locale su http://localhost:5173
-npm run preview   # anteprima della versione di produzione
+npm run preview   # anteprima della versione di produzione (usa i file in dist/)
 ```
 
 ---
@@ -111,7 +113,7 @@ npm run preview   # anteprima della versione di produzione
 Il progetto è configurato per il deploy statico automatico. Ogni push su `main` aggiorna il sito.
 
 ```bash
-# Assicurati che le modifiche siano committate:
+# Aggiungi le foto in public/assets/, aggiorna config.js, poi:
 git add .
 git commit -m "update: nuove foto e testi"
 git push origin main
@@ -119,4 +121,4 @@ git push origin main
 
 Vercel rileva il push e pubblica automaticamente la nuova versione in ~30 secondi.
 
-**Build command:** `npm run build` | **Output dir:** `dist` (configurati automaticamente da Vercel)
+**Build command:** `npm run build` | **Output dir:** `dist` (rilevati automaticamente da Vercel)
