@@ -120,11 +120,15 @@
   transition: background 0.3s ease;
 }
 
+/* Uniformly fills the box — all images same size regardless of original dimensions */
 .station-image-box img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover;     /* crops to fill, never stretches */
+  object-position: center;
   display: block;
+  position: absolute;    /* overlays the placeholder bg completely */
+  inset: 0;
 }
 
 .station-image-hint {
@@ -137,10 +141,19 @@
   line-height: 1.3;
 }
 
+/* Show placeholder emoji only when there is NO img child */
 .station-image-box::before {
   content: '📷';
   font-size: 1.5rem;
   opacity: 0.2;
+}
+/* Hide the emoji as soon as a real image is present */
+.station-image-box:has(img)::before {
+  display: none;
+}
+/* Also hide hint text when image is present */
+.station-image-box:has(img) .station-image-hint {
+  display: none;
 }
 
 /* ── Card text elements ──────────────────────────────────────────── */
