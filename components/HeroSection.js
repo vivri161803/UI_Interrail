@@ -1,102 +1,52 @@
 // components/HeroSection.js
-import { travelData } from '../config.js';
+import { config } from '../config.js';
 
 export function initHeroSection() {
-  const heroElement = document.getElementById('hero');
-  if (!heroElement) return;
+  const heroEl = document.getElementById('hero');
+  if (!heroEl) return;
 
-  // Hydrate content from config
-  const titleEl = document.getElementById('hero-title');
+  // ── Hydrate text from config ──────────────────────────────────────
+  const titleEl    = document.getElementById('hero-title');
   const subtitleEl = document.getElementById('hero-subtitle');
 
-  if (titleEl && travelData.meta.title) {
-    titleEl.textContent = travelData.meta.title;
-    splitTextIntoCharacters(titleEl);
-  }
+  if (titleEl)    { titleEl.textContent = config.meta.title; splitIntoChars(titleEl); }
+  if (subtitleEl) { subtitleEl.textContent = config.meta.subtitle; }
 
-  if (subtitleEl && travelData.meta.subtitle) {
-    subtitleEl.textContent = travelData.meta.subtitle;
-  }
-
-  // Create Background Running Marquee
-  createBackgroundMarquee(heroElement);
-
-  // Create Mouse Scroll Indicator
-  createScrollIndicator(heroElement);
+  // ── Scroll indicator ─────────────────────────────────────────────
+  createScrollIndicator(heroEl);
 }
 
-// Custom split-text utility to wrap letters without external paid plugins
-function splitTextIntoCharacters(element) {
+// Splits every letter into an animatable .char span,
+// wrapped by an overflow:hidden .char-wrapper to act as a reveal mask.
+export function splitIntoChars(element) {
   const text = element.textContent.trim();
   element.innerHTML = '';
-  
-  // Split words first
-  const words = text.split(' ');
-  
-  words.forEach((word, wordIndex) => {
-    const wordSpan = document.createElement('span');
-    wordSpan.style.whiteSpace = 'nowrap';
-    wordSpan.style.display = 'inline-block';
-    
-    // Split letters inside words
-    for (let char of word) {
-      const wrapperSpan = document.createElement('span');
-      wrapperSpan.className = 'char-wrapper';
-      
-      const charSpan = document.createElement('span');
-      charSpan.className = 'char';
-      charSpan.textContent = char;
-      
-      wrapperSpan.appendChild(charSpan);
-      wordSpan.appendChild(wrapperSpan);
+
+  text.split(' ').forEach((word, wi, arr) => {
+    const wordEl = document.createElement('span');
+    wordEl.style.cssText = 'white-space:nowrap; display:inline-block;';
+
+    for (const ch of word) {
+      const wrapper = document.createElement('span');
+      wrapper.className = 'char-wrapper';
+
+      const charEl = document.createElement('span');
+      charEl.className = 'char';
+      charEl.textContent = ch;
+
+      wrapper.appendChild(charEl);
+      wordEl.appendChild(wrapper);
     }
-    
-    element.appendChild(wordSpan);
-    
-    // Add space after word (except the last word)
-    if (wordIndex < words.length - 1) {
-      const space = document.createTextNode(' ');
-      element.appendChild(space);
-    }
+
+    element.appendChild(wordEl);
+    if (wi < arr.length - 1) element.appendChild(document.createTextNode(' '));
   });
 }
 
-function createBackgroundMarquee(parent) {
-  const marquee = document.createElement('div');
-  marquee.className = 'bg-marquee';
-  
-  const inner = document.createElement('div');
-  inner.className = 'marquee-inner';
-  
-  // Combine all destination cities for marquee text
-  const cities = travelData.stations.map(s => s.city).join(' • ');
-  inner.textContent = ` ${cities} • ${cities} `;
-  
-  marquee.appendChild(inner);
-  parent.appendChild(marquee);
-}
-
 function createScrollIndicator(parent) {
-  const container = document.createElement('div');
-  container.className = 'scroll-indicator';
-  
-  const text = document.createElement('span');
-  text.textContent = 'scroll';
-  
-  const mouse = document.createElement('div');
-  mouse.className = 'mouse-icon';
-  
-  const wheel = document.createElement('div');
-  wheel.className = 'mouse-wheel';
-  
-  mouse.appendChild(wheel);
-  container.appendChild(text);
-  container.appendChild(mouse);
-  
-  parent.appendChild(container);
-  
-  // Show scroll indicator slightly after page load
-  setTimeout(() => {
-    container.classList.add('visible');
-  }, 1000);
+  const el = document.createElement('div');
+  el.className = 'scroll-indicator';
+  el.innerHTML = `<span>scroll</span><div class="mouse-icon"><div class="mouse-wheel"></div></div>`;
+  parent.appendChild(el);
+  setTimeout(() => el.classList.add('visible'), 1200);
 }

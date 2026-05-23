@@ -1,53 +1,61 @@
 // components/RouteTimeline.js
-import { travelData } from '../config.js';
+import { config } from '../config.js';
+
+// Vertical pixel positions inside the SVG viewBox (height 2500)
+// Mapped to: Florence, Copenhagen, Stockholm, Uppsala, Hamburg, Munich, Florence-return
+const Y_COORDS = [150, 480, 810, 1220, 1550, 1880, 2210];
 
 export function initRouteTimeline() {
   const container = document.getElementById('timeline-cards');
   if (!container) return;
 
-  // Map each station index to its vertical pixel coordinate along the S-Curve SVG (viewBox 0 0 800 2500)
-  const yCoordinates = [150, 480, 810, 1220, 1550, 1880, 2210];
+  config.stations.forEach((station, i) => {
+    const y = Y_COORDS[i] ?? (150 + i * 330);
 
-  travelData.stations.forEach((station, index) => {
-    const yVal = yCoordinates[index];
-    
-    // Determine horizontal alignment based on station type
-    let alignmentClass = 'outgoing';
-    let xPercent = '25%'; // x=200 on viewBox 800
-    
-    if (station.type === 'return') {
-      alignmentClass = 'return';
-      xPercent = '75%'; // x=600 on viewBox 800
-    } else if (station.type === 'u-turn') {
-      alignmentClass = 'u-turn';
-      xPercent = '50%'; // x=400 on viewBox 800
-    }
+    // X position: outgoing=left of left track (x=200), return=right of right track (x=600)
+    const xPercent = station.type === 'return' ? '75%' : station.type === 'u-turn' ? '50%' : '25%';
 
-    // 1. Create Station Node (the small marker dot along the tracks)
+    // ── Node (dot on track) ────────────────────────────────────────
     const node = document.createElement('div');
     node.className = `station-node station-node-${station.id}`;
-    node.style.top = `${yVal}px`;
-    node.style.left = xPercent;
+    node.style.cssText = `top:${y}px; left:${xPercent};`;
     node.dataset.stationId = station.id;
     container.appendChild(node);
 
-    // 2. Create Station Card
+    // ── Card ──────────────────────────────────────────────────────
     const card = document.createElement('div');
-    card.className = `station-card ${alignmentClass}`;
+    card.className = `station-card ${station.type}`;
     card.id = `card-${station.id}`;
-    card.style.top = `${yVal}px`;
+    card.style.top = `${y}px`;
     card.dataset.stationId = station.id;
 
-    // Build internal markup
+    // Build the image column — try a real img, fall back to placeholder UI
+    const imageColHtml = `
+      <div class="station-image-column">
+        <div class="station-image-box">
+          <span class="station-image-hint">${station.featuredImage}</span>
+        </div>
+      </div>`;
+
     card.innerHTML = `
-      <span class="station-badge">${station.type === 'u-turn' ? 'U-Turn Station' : station.type}</span>
-      <h3 class="station-city">${station.city}</h3>
-      <div class="station-country">${station.country}</div>
-      <div class="station-date">${station.date}</div>
-      <div class="station-accommodation">🏨 ${station.accommodation}</div>
-      <p class="station-notes">${station.notes}</p>
-    `;
+      <div class="station-card-content">
+        <div class="station-text-column">
+          <span class="station-badge">${badgeLabel(station.type)}</span>
+          <h3 class="station-city">${station.cityName}</h3>
+          <div class="station-country">${station.country}</div>
+          <div class="station-date">${station.date}</div>
+          <div class="station-accommodation">🏨 ${station.accommodation}</div>
+          <p class="station-notes">${station.description}</p>
+        </div>
+        ${imageColHtml}
+      </div>`;
 
     container.appendChild(card);
   });
+}
+
+function badgeLabel(type) {
+  if (type === 'u-turn')   return '↩ U-Turn Station';
+  if (type === 'return')   return '← Return Trip';
+  return '→ Outgoing Trip';
 }

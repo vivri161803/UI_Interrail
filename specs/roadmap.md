@@ -4,6 +4,15 @@ This roadmap divides the development into five distinct phases, following a stri
 
 ---
 
+## Phase: Core Modules & State Management Refinement
+- [x] **config.js schema redesign:** `maxPhotosPerAlbum`, `stations` (cityName, featuredImage), `albums` array.
+- [x] **Packing List removed** from index.html, main.js, components/, and styles/.
+- [x] **Hero kinetic typography:** Train-braking letter reveal — `x: 160 → 0`, `skewX: -30 → 0`, `power4.out`, stagger `0.05s`.
+- [x] **Background marquee removed** from Hero section.
+- [x] **Serpentine station cards upgraded:** dual-column layout (text + featured image box).
+- [x] **Timeline animations:** text blur/fade + image scale-up trigger simultaneously.
+- [x] **Horizontal pinned gallery:** 6 album panels, vertical scroll → `translateX`, respects `maxPhotosPerAlbum`.
+
 ## Phase 0: setting up the enviroment for Vercel Deployment
 - [x] Initialize the project by calling it `interrail-landing` using the vanilla JS template.
 - [x] Install base dependencies via npm and explicitly add the gsap library.

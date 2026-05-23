@@ -1,159 +1,153 @@
-// config.js - Centralized configuration file for the Interrail Travel Journal
+// config.js — Central configuration for the Interrail Travel Journal
+// Edit this file to update ALL dynamic content across the site.
 
-export const travelData = {
-  // Website details
+export const config = {
+
+  // ─── GLOBAL SETTINGS ──────────────────────────────────────────────────────
+  maxPhotosPerAlbum: 8,
+
+  // ─── SITE META ────────────────────────────────────────────────────────────
   meta: {
     title: "Interrail 2026",
     subtitle: "Exploring the cold nights & bright railtracks of Northern Europe"
   },
 
-  // Chronological stations in the S-Curve timeline
+  // ─── ITINERARY STATIONS ───────────────────────────────────────────────────
+  // Each station is rendered as a card on the S-Curve timeline.
+  // Rename `featuredImage` to point to your actual photo in `assets/`.
   stations: [
-    // Outgoing Trip (Descends on the Left side of the screen)
     {
       id: "firenze",
-      city: "Florence",
+      cityName: "Florence",
       country: "Italy",
-      date: "August 1 - 2, 2026",
+      date: "August 1–2, 2026",
       accommodation: "Ostello Bello Firenze",
-      notes: "The departure point. Packed bags, passport checked, train ticket validated. Ready for the long journey north.",
-      type: "outgoing", // left-aligned track
-      image: "assets/placeholder-florence.jpg"
+      description: "The departure point. Packed bags, passport checked, Interrail pass validated. Ready for the long journey north.",
+      type: "outgoing",
+      featuredImage: "assets/placeholder-florence.jpg"
     },
     {
       id: "copenhagen",
-      city: "Copenhagen",
+      cityName: "Copenhagen",
       country: "Denmark",
-      date: "August 4 - 6, 2026",
+      date: "August 4–6, 2026",
       accommodation: "Steel House Copenhagen",
-      notes: "Arrived after a scenic trans-European train connection. rented cargo bikes, explored Nyhavn, and enjoyed cardamom buns.",
+      description: "Arrived after a scenic trans-European train connection. Rented cargo bikes, explored Nyhavn, and enjoyed cardamom buns.",
       type: "outgoing",
-      image: "assets/placeholder-copenhagen.jpg"
+      featuredImage: "assets/placeholder-copenhagen.jpg"
     },
     {
       id: "stockholm",
-      city: "Stockholm",
+      cityName: "Stockholm",
       country: "Sweden",
-      date: "August 7 - 10, 2026",
+      date: "August 7–10, 2026",
       accommodation: "Generator Stockholm",
-      notes: "Ferry rides across the archipelago, visited the Vasa Museum, walked the narrow streets of Gamla Stan. Cold breeze at sunset.",
+      description: "Ferry rides across the archipelago, visited the Vasa Museum, walked the narrow streets of Gamla Stan. Cold breeze at sunset.",
       type: "outgoing",
-      image: "assets/placeholder-stockholm.jpg"
+      featuredImage: "assets/placeholder-stockholm.jpg"
     },
     {
       id: "uppsala",
-      city: "Uppsala",
+      cityName: "Uppsala",
       country: "Sweden",
-      date: "August 11 - 12, 2026",
+      date: "August 11–12, 2026",
       accommodation: "CityStay Uppsala",
-      notes: "The northernmost point of the route. Visited the cathedral and university gardens. Beautiful, quiet college town vibe. This is the U-Turn station where we head back south.",
-      type: "u-turn", // U-turn transition station
-      image: "assets/placeholder-uppsala.jpg"
+      description: "The northernmost point of the route — the U-Turn station. Visited the cathedral and university gardens. Beautiful, quiet college town vibe.",
+      type: "u-turn",
+      featuredImage: "assets/placeholder-uppsala.jpg"
     },
-    // Return Trip (Descends on the Right side of the screen)
     {
       id: "hamburg",
-      city: "Hamburg",
+      cityName: "Hamburg",
       country: "Germany",
-      date: "August 14 - 15, 2026",
+      date: "August 14–15, 2026",
       accommodation: "Superbude Altona",
-      notes: "Speicherstadt brick warehouses looked amazing at twilight. Visited Miniatur Wunderland. Great harbor vibes.",
-      type: "return", // right-aligned track
-      image: "assets/placeholder-hamburg.jpg"
+      description: "Speicherstadt brick warehouses looked amazing at twilight. Visited Miniatur Wunderland. Great harbor vibes.",
+      type: "return",
+      featuredImage: "assets/placeholder-hamburg.jpg"
     },
     {
       id: "munich",
-      city: "Munich",
+      cityName: "Munich",
       country: "Germany",
-      date: "August 17 - 19, 2026",
+      date: "August 17–19, 2026",
       accommodation: "Wombat's City Hostel",
-      notes: "Walked around Marienplatz, relaxed in the Englischer Garten, watched surfers on the Eisbachwelle wave.",
+      description: "Marienplatz, the Englischer Garten, and surfers on the Eisbachwelle wave. A perfect final stop before heading home.",
       type: "return",
-      image: "assets/placeholder-munich.jpg"
+      featuredImage: "assets/placeholder-munich.jpg"
     },
     {
       id: "firenze-return",
-      city: "Florence",
+      cityName: "Florence",
       country: "Italy",
       date: "August 21, 2026",
       accommodation: "Home Sweet Home",
-      notes: "End of the loop. Exhausted but full of memories, rail tickets, and photos from across Europe.",
+      description: "End of the loop. Exhausted but full of memories, rail tickets, and photos from across Northern Europe.",
       type: "return",
-      image: "assets/placeholder-return.jpg"
+      featuredImage: "assets/placeholder-return.jpg"
     }
   ],
 
-  // Packing list items
-  packingList: [
+  // ─── PHOTO ALBUMS ─────────────────────────────────────────────────────────
+  // Each album corresponds to one city. photoPaths lists filenames inside assets/.
+  // The gallery respects `maxPhotosPerAlbum` — any extras are silently ignored.
+  // Replace placeholder strings with real filenames once photos are added.
+  albums: [
     {
-      category: "Essentials",
-      items: [
-        { id: "pass", name: "Interrail Pass / App", checked: false },
-        { id: "passport", name: "Passport & ID cards", checked: false },
-        { id: "cash", name: "Euros & Swedish Krona", checked: false },
-        { id: "res", name: "Seat Reservation PDFs", checked: false }
+      cityName: "Florence",
+      photoPaths: [
+        "assets/florence-01.jpg",
+        "assets/florence-02.jpg",
+        "assets/florence-03.jpg",
+        "assets/florence-04.jpg"
       ]
     },
     {
-      category: "Tech & Gear",
-      items: [
-        { id: "powerbank", name: "20,000mAh Powerbank", checked: false },
-        { id: "charger", name: "Multi-port USB-C plug", checked: false },
-        { id: "adapters", name: "Travel plug adapter", checked: false },
-        { id: "headphones", name: "ANC Headphones (for trains)", checked: false }
+      cityName: "Copenhagen",
+      photoPaths: [
+        "assets/copenhagen-01.jpg",
+        "assets/copenhagen-02.jpg",
+        "assets/copenhagen-03.jpg",
+        "assets/copenhagen-04.jpg",
+        "assets/copenhagen-05.jpg"
       ]
     },
     {
-      category: "Clothing",
-      items: [
-        { id: "jacket", name: "Light windbreaker jacket", checked: false },
-        { id: "raincoat", name: "Rain jacket/poncho", checked: false },
-        { id: "shoes", name: "Comfy walking sneakers", checked: false },
-        { id: "layers", name: "Warm layers for Nordic nights", checked: false }
+      cityName: "Stockholm",
+      photoPaths: [
+        "assets/stockholm-01.jpg",
+        "assets/stockholm-02.jpg",
+        "assets/stockholm-03.jpg",
+        "assets/stockholm-04.jpg",
+        "assets/stockholm-05.jpg"
       ]
     },
     {
-      category: "Toiletries & Meds",
-      items: [
-        { id: "towel", name: "Microfiber quick-dry towel", checked: false },
-        { id: "shampoo", name: "Solid soap/shampoo bars", checked: false },
-        { id: "earplugs", name: "Earplugs & sleep mask (hostels!)", checked: false },
-        { id: "kit", name: "First-aid basic kit", checked: false }
+      cityName: "Uppsala",
+      photoPaths: [
+        "assets/uppsala-01.jpg",
+        "assets/uppsala-02.jpg",
+        "assets/uppsala-03.jpg"
       ]
-    }
-  ],
-
-  // Gallery images & stories
-  gallery: [
-    {
-      id: "train-view",
-      title: "Window seat views",
-      description: "Hours spent looking at changing landscapes from Denmark to Sweden."
     },
     {
-      id: "gamla-stan",
-      title: "Gamla Stan alleys",
-      description: "Sunset colors on historical buildings in the heart of Stockholm."
+      cityName: "Hamburg",
+      photoPaths: [
+        "assets/hamburg-01.jpg",
+        "assets/hamburg-02.jpg",
+        "assets/hamburg-03.jpg",
+        "assets/hamburg-04.jpg"
+      ]
     },
     {
-      id: "nyhavn",
-      title: "Nyhavn canals",
-      description: "Bright colored facades and old wooden ships in Copenhagen."
-    },
-    {
-      id: "hamburg-harbor",
-      title: "Hamburg Elbphilharmonie",
-      description: "Modern architecture meeting the historic industrial port."
-    },
-    {
-      id: "hostel-life",
-      title: "Late night card games",
-      description: "Meeting fellow backpackers from all around the world in common rooms."
-    },
-    {
-      id: "scandinavian-forests",
-      title: "Swedish pine forests",
-      description: "Endless green fields and lakes passing by the train windows."
+      cityName: "Munich",
+      photoPaths: [
+        "assets/munich-01.jpg",
+        "assets/munich-02.jpg",
+        "assets/munich-03.jpg",
+        "assets/munich-04.jpg",
+        "assets/munich-05.jpg"
+      ]
     }
   ]
 };

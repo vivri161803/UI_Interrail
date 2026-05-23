@@ -1,44 +1,42 @@
 // animations/heroAnimations.js
+// Train-themed kinetic typography — letters slide in from right like arriving train cars
 import { gsap } from "gsap";
 
 export function initHeroAnimations() {
-  const chars = document.querySelectorAll('#hero-title .char');
+  const chars    = document.querySelectorAll('#hero-title .char');
   const subtitle = document.getElementById('hero-subtitle');
-  const scrollIndicator = document.querySelector('.scroll-indicator');
 
   if (chars.length === 0) return;
 
-  // Set initial states (if not fully set in CSS)
-  gsap.set(chars, { y: '100%', opacity: 0 });
-  if (subtitle) gsap.set(subtitle, { y: 20, opacity: 0 });
-  if (scrollIndicator) gsap.set(scrollIndicator, { opacity: 0 });
-
-  const tl = gsap.timeline();
-
-  // 1. Reveal "Interrail 2026" character-by-character
-  tl.to(chars, {
-    y: '0%',
-    opacity: 1,
-    duration: 1.2,
-    stagger: 0.04,
-    ease: 'expo.out'
+  // ── Set initial "train approaching" state ─────────────────────────
+  // Letters start far off-screen to the right, tilted forward (skewX negative),
+  // and invisible — as if the train is still moving at speed.
+  gsap.set(chars, {
+    x: 160,          // off to the right
+    skewX: -30,      // tilt: forward momentum
+    opacity: 0
   });
 
-  // 2. Reveal subtitle
+  if (subtitle) gsap.set(subtitle, { y: 22, opacity: 0 });
+
+  // ── Timeline: train brakes into station ───────────────────────────
+  const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+
+  tl.to(chars, {
+    x: 0,            // slides into position
+    skewX: 0,        // straightens out as it brakes
+    opacity: 1,
+    duration: 1.1,
+    stagger: 0.05,   // each "car" couples in slightly after the previous
+  });
+
+  // Subtitle fades up once the title has landed
   if (subtitle) {
     tl.to(subtitle, {
       y: 0,
       opacity: 1,
-      duration: 1.0,
+      duration: 0.9,
       ease: 'power3.out'
-    }, '-=0.8'); // start slightly before characters finish
-  }
-
-  // 3. Fade in mouse scroll indicator
-  if (scrollIndicator) {
-    tl.to(scrollIndicator, {
-      opacity: 0.5,
-      duration: 0.8
     }, '-=0.6');
   }
 }

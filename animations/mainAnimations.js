@@ -1,64 +1,42 @@
 // animations/mainAnimations.js
-import { gsap } from "gsap";
+import { gsap }          from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { initHeroAnimations } from "./heroAnimations.js";
+import { initHeroAnimations }     from "./heroAnimations.js";
 import { initTimelineAnimations } from "./timelineAnimations.js";
 
-// Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
 export function initGlobalAnimations() {
-  console.log("Initializing GSAP animations...");
-  
-  // Initialize section animations
   initHeroAnimations();
   initTimelineAnimations();
-  
-  // Initialize dynamic marquee acceleration effect
-  initMarqueeParallax();
+  initHorizontalGallery();
 }
 
-function initMarqueeParallax() {
-  const marqueeInner = document.querySelector('.marquee-inner');
-  if (!marqueeInner) return;
+// ── Horizontal Gallery: vertical scroll → horizontal translate ────────────
+function initHorizontalGallery() {
+  const outer  = document.querySelector('.horizontal-gallery-outer');
+  const inner  = document.getElementById('gallery-horizontal-wrapper');
+  if (!outer || !inner) return;
 
-  // Duplicate the text content once to allow continuous horizontal loop
-  marqueeInner.innerHTML = marqueeInner.innerHTML + marqueeInner.innerHTML;
+  // Total horizontal distance to travel = total inner width minus one viewport width
+  const getTravelDistance = () => -(inner.scrollWidth - window.innerWidth);
 
-  // 1. Continuous slow marquee animation loop
-  const marqueeTween = gsap.to(marqueeInner, {
-    xPercent: -50,
-    ease: "none",
-    duration: 35,
-    repeat: -1
+  const galleryTween = gsap.to(inner, {
+    x: getTravelDistance,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: outer,
+      pin: true,                // pins the outer section while scrolling
+      scrub: 1,
+      start: 'top top',
+      // end: scroll length proportional to number of panels
+      end: () => `+=${inner.scrollWidth - window.innerWidth}`,
+      invalidateOnRefresh: true // recalculates on resize
+    }
   });
 
-  // 2. Accelerate speed based on scroll velocity
-  let delayTimeout;
-  ScrollTrigger.create({
-    onUpdate: (self) => {
-      const scrollVelocity = Math.abs(self.getVelocity());
-      
-      // Calculate speed scale (1 = normal, up to 7x for fast scrolls)
-      const scaleValue = 1 + (scrollVelocity / 300);
-      const cappedScale = Math.min(scaleValue, 7);
-
-      // Smoothly animate timeScale of marquee tween to new value
-      gsap.to(marqueeTween, { 
-        timeScale: cappedScale, 
-        duration: 0.3,
-        overwrite: "auto"
-      });
-
-      // Clear previous timeout and schedule decelerating return to normal speed (timeScale = 1)
-      clearTimeout(delayTimeout);
-      delayTimeout = setTimeout(() => {
-        gsap.to(marqueeTween, { 
-          timeScale: 1, 
-          duration: 1.5, 
-          ease: "power2.out" 
-        });
-      }, 100);
-    }
+  // Recalculate on resize
+  window.addEventListener('resize', () => {
+    ScrollTrigger.refresh();
   });
 }

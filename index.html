@@ -4,11 +4,11 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- SEO Optimization -->
+
+    <!-- SEO -->
     <title>Interrail 2026 — Journey to Northern Europe</title>
-    <meta name="description" content="An interactive travel journal documenting a summer Interrail adventure through Northern Europe, featuring Florence, Copenhagen, Stockholm, Uppsala, Hamburg, and Munich." />
-    
+    <meta name="description" content="An interactive travel journal documenting a summer Interrail adventure through Northern Europe: Florence, Copenhagen, Stockholm, Uppsala, Hamburg, and Munich." />
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,28 +16,31 @@
   </head>
   <body>
     <div id="app">
-      <!-- Hero Section -->
+
+      <!-- ── HERO ─────────────────────────────────────────────────────── -->
       <header id="hero" class="hero">
         <div class="container">
           <div class="hero-content">
             <h1 id="hero-title" class="title-split">Interrail 2026</h1>
-            <p id="hero-subtitle" class="subtitle">Exploring the cold nights & bright railtracks of Northern Europe</p>
+            <p id="hero-subtitle" class="subtitle">Exploring the cold nights &amp; bright railtracks of Northern Europe</p>
           </div>
         </div>
       </header>
 
-      <!-- Itinerary Timeline Section -->
+      <!-- ── ITINERARY TIMELINE ────────────────────────────────────────── -->
       <section id="itinerary" class="timeline-section section-padding">
         <div class="container">
           <h2 id="itinerary-title" class="section-title">The Journey</h2>
-          
           <div class="timeline-container">
-            <!-- Serpentine SVG track -->
+            <!-- S-Curve SVG track -->
             <svg class="timeline-svg" viewBox="0 0 800 2500" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path class="track-bg" d="M 200 100 L 200 1050 C 200 1250, 600 1200, 600 1400 L 600 2350" stroke="rgba(255, 255, 255, 0.05)" stroke-width="6" stroke-linecap="round" />
-              <path id="active-track" d="M 200 100 L 200 1050 C 200 1250, 600 1200, 600 1400 L 600 2350" stroke="var(--accent-primary)" stroke-width="6" stroke-linecap="round" />
+              <path class="track-bg"
+                    d="M 200 100 L 200 1050 C 200 1250, 600 1200, 600 1400 L 600 2350"
+                    stroke="rgba(255,255,255,0.05)" stroke-width="6" stroke-linecap="round" />
+              <path id="active-track"
+                    d="M 200 100 L 200 1050 C 200 1250, 600 1200, 600 1400 L 600 2350"
+                    stroke="var(--accent-primary)" stroke-width="6" stroke-linecap="round" />
             </svg>
-            
             <div id="timeline-cards" class="timeline-cards-container">
               <!-- Dynamically hydrated from config.js -->
             </div>
@@ -45,34 +48,25 @@
         </div>
       </section>
 
-      <!-- Gallery / Moodboard Section -->
-      <section id="gallery" class="gallery-section section-padding">
-        <div class="container">
-          <h2 id="gallery-title" class="section-title">Gallery & Moodboard</h2>
-          <div id="gallery-grid" class="gallery-grid">
-            <!-- Dynamically hydrated from config.js -->
-          </div>
+      <!-- ── HORIZONTAL PHOTO GALLERY ──────────────────────────────────── -->
+      <section id="gallery" class="horizontal-gallery-outer">
+        <div id="gallery-horizontal-wrapper" class="horizontal-gallery-inner">
+          <!-- 6 city albums injected dynamically from config.js -->
         </div>
       </section>
 
-      <!-- Packing List Section -->
-      <section id="packing" class="packing-section section-padding">
-        <div class="container">
-          <h2 id="packing-title" class="section-title">Packing Checklist</h2>
-          <div id="packing-list-root" class="packing-grid">
-            <!-- Dynamically hydrated from config.js -->
-          </div>
-        </div>
-      </section>
-
-      <!-- Footer Section -->
+      <!-- ── FOOTER ────────────────────────────────────────────────────── -->
       <footer id="footer" class="footer">
         <div class="container">
-          <p>&copy; 2026 Interrail Journey. All rights reserved.</p>
+          <div class="footer-content">
+            <p class="footer-text">© 2026 Interrail Travel Journal. Crafted with digital minimalism &amp; GSAP.</p>
+            <a href="#hero" class="footer-link">Back to top ↑</a>
+          </div>
         </div>
       </footer>
+
     </div>
-    
+
     <!-- Entry Script -->
     <script type="module" src="/main.js"></script>
   </body>

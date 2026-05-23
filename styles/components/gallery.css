@@ -1,118 +1,138 @@
-/* styles/components/gallery.css - Gallery/Moodboard Section Styles */
+/* styles/components/gallery.css — Horizontal Pinned Photo Gallery */
 
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--spacing-md);
-  margin-top: 3rem;
-}
-
-.gallery-item {
+/* ── Outer wrapper (this is what GSAP pins) ──────────────────────── */
+.horizontal-gallery-outer {
   position: relative;
-  background-color: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-md);
-  overflow: hidden;
-  box-shadow: var(--box-shadow);
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              border-color 0.3s ease,
-              box-shadow 0.3s ease;
-  cursor: pointer;
-}
-
-.gallery-item:hover {
-  transform: translateY(-8px);
-  border-color: var(--accent-secondary);
-  box-shadow: 0 12px 40px rgba(59, 130, 246, 0.15);
-}
-
-/* Image Placeholder (using a modern CSS gradient/solid block) */
-.gallery-image-placeholder {
   width: 100%;
-  aspect-ratio: 16/10;
-  background: linear-gradient(135deg, #1f293d 0%, #111827 100%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
+  height: 100vh;
   overflow: hidden;
-  border-bottom: 1px solid var(--border-color);
-  transition: background 0.3s ease;
+  background: var(--bg-primary);
 }
 
-.gallery-item:hover .gallery-image-placeholder {
-  background: linear-gradient(135deg, #273552 0%, #162035 100%);
+/* ── Inner flex row (this is what GSAP translates) ───────────────── */
+.horizontal-gallery-inner {
+  display: flex;
+  flex-flow: row nowrap;
+  height: 100%;
+  width: max-content;   /* grows to fit all album panels */
+  will-change: transform;
 }
 
-/* Icon / Graphic overlaying the placeholder */
-.gallery-image-placeholder::before {
-  content: '📸';
-  font-size: 2rem;
-  opacity: 0.25;
-  transition: transform 0.4s ease, opacity 0.3s ease;
+/* ── Single city album panel (one per city) ──────────────────────── */
+.gallery-album {
+  width: 100vw;
+  height: 100vh;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6rem var(--spacing-2xl) var(--spacing-xl);
+  border-right: 1px solid var(--border-color);
+  box-sizing: border-box;
+  position: relative;
 }
 
-.gallery-item:hover .gallery-image-placeholder::before {
-  transform: scale(1.1) rotate(-5deg);
-  opacity: 0.6;
+.gallery-album-city {
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
+  line-height: 1;
 }
 
-/* Bottom shadow vignette for placeholder text readability */
-.gallery-image-placeholder::after {
-  content: '';
+.gallery-album-count {
+  font-size: var(--font-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-xl);
+}
+
+/* ── Album progress indicator (top line) ─────────────────────────── */
+.gallery-album-index {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 40%;
-  background: linear-gradient(to top, rgba(11, 15, 25, 0.8), transparent);
+  top: var(--spacing-lg);
+  left: var(--spacing-2xl);
+  font-size: var(--font-xs);
+  color: var(--accent-secondary);
+  letter-spacing: 0.1em;
+}
+
+/* ── Photo grid inside the album ─────────────────────────────────── */
+.album-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--spacing-sm);
+  max-height: 55vh;
+  overflow: hidden;        /* clips to maxPhotosPerAlbum rows */
+}
+
+/* ── Individual photo item ───────────────────────────────────────── */
+.album-photo-item {
+  position: relative;
+  aspect-ratio: 4/3;
+  background: linear-gradient(135deg, #1e2d47 0%, #0f1928 100%);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              border-color 0.3s ease;
+}
+
+.album-photo-item:hover {
+  transform: scale(1.03);
+  border-color: var(--accent-secondary);
+}
+
+.album-photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Placeholder icon + filename shown when no image is present */
+.album-photo-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+}
+
+.album-photo-placeholder::before {
+  content: '🖼';
+  font-size: 1.4rem;
+  opacity: 0.2;
+}
+
+.album-photo-filename {
+  font-size: 9px;
+  color: var(--text-muted);
+  opacity: 0.5;
+  text-align: center;
+  line-height: 1.3;
+  word-break: break-all;
+}
+
+/* ── Navigation hint bar at the bottom ───────────────────────────── */
+.gallery-nav-hint {
+  position: fixed;
+  bottom: var(--spacing-lg);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--font-xs);
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  text-transform: uppercase;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.5s ease;
+  z-index: 100;
 }
-
-.gallery-item:hover .gallery-image-placeholder::after {
-  opacity: 1;
-}
-
-.gallery-info {
-  padding: var(--spacing-md);
-}
-
-.gallery-item-title {
-  font-size: var(--font-lg);
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-xs);
-  transition: color 0.3s ease;
-}
-
-.gallery-item:hover .gallery-item-title {
-  color: var(--accent-secondary);
-}
-
-.gallery-item-description {
-  font-size: var(--font-sm);
-  color: var(--text-secondary);
-  line-height: 1.4;
-}
-
-/* Add custom image upload overlay indicator (for the README documentation help) */
-.gallery-upload-tip {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: rgba(11, 15, 25, 0.85);
-  border: 1px solid var(--border-color);
-  color: var(--text-muted);
-  font-size: 10px;
-  padding: 4px 8px;
-  border-radius: var(--border-radius-sm);
-  pointer-events: none;
-  transition: color 0.3s ease, border-color 0.3s ease;
-}
-
-.gallery-item:hover .gallery-upload-tip {
-  color: var(--accent-secondary);
-  border-color: var(--accent-primary);
-}
+.gallery-nav-hint.visible { opacity: 0.45; }

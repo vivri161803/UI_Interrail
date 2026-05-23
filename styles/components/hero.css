@@ -1,4 +1,5 @@
-/* styles/components/hero.css - Hero Section Styles */
+/* styles/components/hero.css — Hero Section Styles */
+
 .hero {
   position: relative;
   min-height: 100vh;
@@ -6,88 +7,67 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 50%, #111b33 0%, var(--bg-primary) 70%);
+  background: radial-gradient(ellipse at 50% 60%, #111b33 0%, var(--bg-primary) 68%);
   padding: var(--spacing-xl) 0;
   text-align: center;
 }
 
-/* Background grid overlay */
+/* Subtle background grid */
 .hero::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
   background-size: 40px 40px;
-  background-position: center center;
   pointer-events: none;
+  z-index: 0;
 }
 
 .hero-content {
   position: relative;
   z-index: 10;
-  max-width: 800px;
+  max-width: 900px;
   padding: 0 var(--spacing-md);
 }
 
+/* ── Title ───────────────────────────────────────────────────── */
 .title-split {
-  font-size: clamp(3rem, 10vw, 6.5rem);
+  font-size: clamp(3rem, 11vw, 7rem);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 0.9;
   margin-bottom: var(--spacing-md);
   color: var(--text-primary);
   text-transform: uppercase;
+  /* overflow hidden ensures chars don't bleed outside during slide-in */
+  overflow: hidden;
 }
 
-/* Char splitting wrappers for GSAP reveal */
+/* char-wrapper acts as the mask; clip happens here */
 .char-wrapper {
   display: inline-block;
   overflow: hidden;
   vertical-align: bottom;
 }
 
+/* Each letter is the animatable unit */
 .char {
   display: inline-block;
-  transform: translateY(100%);
-  opacity: 0;
+  /* Initial state set by GSAP — translated right, skewed, invisible */
 }
 
+/* ── Subtitle ─────────────────────────────────────────────────── */
 .subtitle {
-  font-size: clamp(1rem, 3vw, 1.35rem);
+  font-size: clamp(0.9rem, 2.5vw, 1.25rem);
   color: var(--text-secondary);
   font-weight: 300;
   letter-spacing: 0.05em;
-  opacity: 0;
-  transform: translateY(20px);
+  /* Initial state set by GSAP */
 }
 
-/* Background running marquee styling */
-.bg-marquee {
-  position: absolute;
-  bottom: 10%;
-  left: 0;
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0.02;
-  z-index: 1;
-}
-
-.marquee-inner {
-  display: inline-block;
-  font-size: 12vw;
-  font-weight: 900;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-/* Bottom scroll indicator */
+/* ── Scroll Indicator ─────────────────────────────────────────── */
 .scroll-indicator {
   position: absolute;
   bottom: var(--spacing-lg);
@@ -102,25 +82,21 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   opacity: 0;
-  transition: opacity 1s ease 1.5s;
+  transition: opacity 0.8s ease;
 }
-
-.scroll-indicator.visible {
-  opacity: 0.5;
-}
+.scroll-indicator.visible { opacity: 0.45; }
 
 .mouse-icon {
   width: 20px;
   height: 32px;
-  border: 2px solid var(--text-muted);
+  border: 2px solid currentColor;
   border-radius: 10px;
   position: relative;
 }
-
 .mouse-wheel {
   width: 4px;
   height: 8px;
-  background-color: var(--accent-primary);
+  background: var(--accent-primary);
   border-radius: 2px;
   position: absolute;
   top: 6px;
@@ -128,9 +104,8 @@
   transform: translateX(-50%);
   animation: scrollWheel 2s infinite;
 }
-
 @keyframes scrollWheel {
-  0% { top: 6px; opacity: 1; }
-  50% { top: 16px; opacity: 0; }
-  100% { top: 6px; opacity: 1; }
+  0%   { top: 6px;  opacity: 1; }
+  50%  { top: 16px; opacity: 0; }
+  100% { top: 6px;  opacity: 1; }
 }
