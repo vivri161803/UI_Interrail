@@ -34,10 +34,10 @@ export function initTimelineAnimations() {
     const imageBox  = card.querySelector('.station-image-box');
     const textCol   = card.querySelector('.station-text-column');
 
-    // Initial hidden states
+    // Initial hidden states — no y offset (CSS transform handles card positioning)
     gsap.set(card,     { opacity: 0 });
-    gsap.set(textCol,  { opacity: 0, filter: 'blur(10px)', y: 16 });
-    if (imageBox) gsap.set(imageBox, { opacity: 0, scale: 0.88 });
+    gsap.set(textCol,  { opacity: 0, filter: 'blur(8px)' });
+    if (imageBox) gsap.set(imageBox, { opacity: 0, scale: 0.9 });
 
     ScrollTrigger.create({
       trigger: card,
@@ -46,9 +46,9 @@ export function initTimelineAnimations() {
         // Reveal the card wrapper itself
         gsap.to(card, { opacity: 1, duration: 0.01 });
 
-        // Text: blur → sharp + slide up
+        // Text: blur → sharp
         gsap.to(textCol, {
-          opacity: 1, filter: 'blur(0px)', y: 0,
+          opacity: 1, filter: 'blur(0px)',
           duration: 0.75, ease: 'power2.out'
         });
 

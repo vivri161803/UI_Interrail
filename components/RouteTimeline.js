@@ -1,9 +1,12 @@
 // components/RouteTimeline.js
 import { config } from '../config.js';
 
-// Vertical pixel positions inside the SVG viewBox (height 2500)
-// Mapped to: Florence, Copenhagen, Stockholm, Uppsala, Hamburg, Munich, Florence-return
-const Y_COORDS = [150, 480, 810, 1220, 1550, 1880, 2210];
+// Vertical pixel positions inside the SVG viewBox (now height 3400)
+// Spacing ≥480px between each station so cards never overlap.
+// Aligned to path: M 200 80 L 200 1520 C ... 600 2060 L 600 3300
+//   Outgoing (left track x=200):  Florence 140, Copenhagen 600, Stockholm 1060, Uppsala 1520
+//   Return  (right track x=600):  Hamburg 2060, Munich 2540, Florence-return 3020
+const Y_COORDS = [140, 600, 1060, 1520, 2060, 2540, 3020];
 
 export function initRouteTimeline() {
   const container = document.getElementById('timeline-cards');

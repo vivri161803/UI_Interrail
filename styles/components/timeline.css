@@ -9,7 +9,7 @@
   width: 100%;
   max-width: 800px;
   margin: 4rem auto 0;
-  height: 2500px;
+  height: 3400px;
 }
 
 .timeline-svg {
@@ -66,13 +66,21 @@
   box-shadow: 0 8px 36px rgba(59, 130, 246, 0.12);
 }
 
-/* Horizontal alignment variants */
-.station-card.outgoing { left: 240px; }
-.station-card.return   { right: 240px; }
+/* Horizontal alignment variants — offset from the track line (x=200 or x=600 in viewBox)
+   Cards are positioned so their inner edge starts ~10px away from the SVG track line.
+   Since container max-width is 800px, x=200 is at 25% from left, x=600 is at 75% from left. */
+.station-card.outgoing {
+  left: 215px;          /* just right of left track (x=200) */
+  transform: translateY(-20px);
+}
+.station-card.return {
+  right: 215px;         /* just left of right track (x=600) */
+  transform: translateY(-20px);
+}
 .station-card.u-turn {
   left: 50%;
-  transform: translateX(-50%);
-  width: 420px;
+  transform: translate(-50%, -20px);
+  width: 380px;
   text-align: center;
   border-color: rgba(96, 165, 250, 0.18);
 }
