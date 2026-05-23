@@ -7,12 +7,12 @@ export function initGallerySection() {
 
   const { albums, maxPhotosPerAlbum } = config;
 
-  // ── Navigation hint ────────────────────────────────────────────
+  // ── Navigation hint (hidden by default, shown only while gallery is pinned) ──
   const navHint = document.createElement('div');
-  navHint.className = 'gallery-nav-hint';
+  navHint.className = 'gallery-nav-hint';   // starts invisible via CSS (opacity:0)
   navHint.textContent = '← scroll to explore albums →';
   document.body.appendChild(navHint);
-  setTimeout(() => navHint.classList.add('visible'), 200);
+  // Visibility is toggled in mainAnimations.js via ScrollTrigger callbacks
 
   // ── Build one panel per city album ───────────────────────────
   albums.forEach((album, index) => {
@@ -28,15 +28,12 @@ export function initGallerySection() {
     const totalStr = String(albums.length).padStart(2, '0');
 
     // Build photo grid HTML
-    const gridItems = photos.map(path => {
-      // Try to detect if file likely exists (we can't do I/O in browser, so always render placeholder markup)
-      return `
+    const gridItems = photos.map(path => `
         <div class="album-photo-item">
           <div class="album-photo-placeholder">
             <span class="album-photo-filename">${path}</span>
           </div>
-        </div>`;
-    }).join('');
+        </div>`).join('');
 
     panel.innerHTML = `
       <div class="gallery-album-index">${indexStr} / ${totalStr}</div>

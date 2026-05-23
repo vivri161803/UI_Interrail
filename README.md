@@ -1,57 +1,122 @@
-# 🚂 Interrail 2026 — Nord Europe Travel Journal
+# 🚂 Interrail 2026 — Nord Europa Travel Journal
 
-Benvenuto nel tuo diario di viaggio Interrail! Questo progetto è una landing-page a scorrimento singolo interattiva, minimalista e animata con **GSAP** e **ScrollTrigger**, configurata con **Vite** e **Vanilla JS**.
-
-Questo documento ti spiega come riempire la pagina con le tue foto e personalizzare i testi in pochi secondi.
+Diario di viaggio interattivo a scorrimento singolo, animato con **GSAP + ScrollTrigger** e distribuito su **Vercel** come sito statico. Costruito con Vite + Vanilla JS/CSS.
 
 ---
 
-## 🛠️ Come personalizzare la pagina al volo
+## 🛠️ Personalizzare il sito: tutto passa da `config.js`
 
-Tutti i contenuti del sito (città, date, alloggi, diari di bordo, checklist e immagini) sono gestiti in modo centralizzato. Non c'è bisogno di toccare il codice HTML o i fogli di stile!
-
-### 1. Cambiare testi e alloggi
-Apri il file **[config.js](file:///Users/vivri161803/Documents/Code/UI_Interrail/config.js)**. Troverai tre oggetti principali:
-* `stations`: L'itinerario del viaggio (città, date, alloggio, note). Aggiungendo o modificando le stazioni, queste verranno visualizzate automaticamente lungo la timeline a serpentina.
-* `packingList`: Le categorie e gli elementi della checklist.
-* `gallery`: I titoli e le didascalie dei tuoi ricordi.
-
-### 2. Aggiungere le tue foto
-Per sostituire i blocchi grigi della galleria con le tue foto reali:
-1. Salva le tue foto nella cartella **[assets/](file:///Users/vivri161803/Documents/Code/UI_Interrail/assets)**.
-2. Rinominale usando lo stesso ID definito in `config.js` (estensione `.jpg` consigliata):
-   * `train-view.jpg` (Vista dal finestrino)
-   * `gamla-stan.jpg` (Centro di Stoccolma)
-   * `nyhavn.jpg` (Canali di Copenhagen)
-   * `hamburg-harbor.jpg` (Porto di Amburgo)
-   * `hostel-life.jpg` (Serate in ostello)
-   * `scandinavian-forests.jpg` (Foreste svedesi)
-3. *Opzionale*: Per far sì che le foto appaiano al posto dei blocchi grigi, apri **[styles/components/gallery.css](file:///Users/vivri161803/Documents/Code/UI_Interrail/styles/components/gallery.css)** e aggiungi la proprietà `background-image: url('../../assets/ID.jpg');` oppure modifica `components/GallerySection.js` per inserire tag `<img>` reali (la struttura supporta entrambi!).
+Apri **[config.js](./config.js)** nella root del progetto. Troverai un unico oggetto `config` con quattro sezioni. Non devi toccare altro per aggiornare tutti i contenuti visibili sul sito.
 
 ---
 
-## 🚀 Esecuzione in Locale
+### 1. Testo dell'Hero (titolo e sottotitolo)
 
-Per avviare l'ambiente di sviluppo e vedere le modifiche in tempo reale:
+```js
+meta: {
+  title: "Interrail 2026",           // ← modifica il titolo principale
+  subtitle: "Exploring the cold..."   // ← modifica il sottotitolo
+},
+```
 
-1. Installa le dipendenze (se clonato da zero):
-   ```bash
-   npm install
+---
+
+### 2. Stazioni lungo la timeline a S (itinerario)
+
+Ogni oggetto nell'array `stations` genera una **scheda stazione** sulla serpentina, con testo a sinistra e immagine a destra (o sotto, per la stazione di svolta Uppsala).
+
+```js
+stations: [
+  {
+    id: "firenze",          // ID univoco (non modificare, serve come ancoraggio)
+    cityName: "Florence",   // ← Nome della città visualizzato sulla scheda
+    country: "Italy",       // ← Paese visualizzato sotto il nome
+    date: "August 1–2, 2026",          // ← Date del soggiorno
+    accommodation: "Ostello Bello Firenze", // ← Nome dell'ostello/hotel
+    description: "...",     // ← Diario di bordo: cosa hai visto e vissuto
+    type: "outgoing",       // NON modificare: "outgoing" | "u-turn" | "return"
+    featuredImage: "assets/placeholder-florence.jpg" // ← vedi sezione 4 ↓
+  },
+  // ... altre stazioni
+]
+```
+
+**Cosa puoi modificare liberamente:**
+- `cityName`, `country`, `date`, `accommodation`, `description` → aggiorna pure con i tuoi dati reali
+- `featuredImage` → percorso relativo alla foto che vuoi mostrare accanto alla scheda (vedi sezione 4)
+
+**Non modificare:**
+- `id` e `type` — determinano la posizione sulla curva a S e non vanno cambiati
+
+---
+
+### 3. Album fotografici della galleria orizzontale
+
+La galleria mostra **6 album città** in scorrimento orizzontale. Ogni album può contenere al massimo `maxPhotosPerAlbum` foto (default: 8).
+
+```js
+maxPhotosPerAlbum: 8,  // ← cambia qui per aumentare o ridurre il limite globale
+
+albums: [
+  {
+    cityName: "Florence",   // ← Nome visualizzato come titolo dell'album
+    photoPaths: [           // ← Lista dei percorsi delle foto
+      "assets/florence-01.jpg",
+      "assets/florence-02.jpg",
+      // aggiungi fino a maxPhotosPerAlbum elementi
+    ]
+  },
+  // ... altri 5 album
+]
+```
+
+---
+
+### 4. Come aggiungere le tue foto
+
+**Foto dell'album (galleria):**
+1. Copia le foto nella cartella **`assets/`** nella root del progetto
+2. Rinominale in modo descrittivo (es. `florence-01.jpg`, `stockholm-03.jpg`)
+3. Aggiorna i percorsi nell'array `photoPaths` dell'album corrispondente in `config.js`
+4. Il sito le caricherà automaticamente — nessun altro file da toccare
+
+**Foto accanto alle stazioni (timeline):**
+1. Copia la foto in **`assets/`** (es. `firenze-hero.jpg`)
+2. In `config.js`, trova la stazione corrispondente e aggiorna il campo `featuredImage`:
+   ```js
+   featuredImage: "assets/firenze-hero.jpg"
    ```
-2. Avvia il server di sviluppo locale:
-   ```bash
-   npm run dev
+3. Poi in **`components/RouteTimeline.js`**, trova il blocco `imageColHtml` e sostituisci il contenuto del `.station-image-box` con un tag `<img>` reale:
+   ```js
+   // Sostituisci questa riga:
+   <span class="station-image-hint">${station.featuredImage}</span>
+   // Con questa:
+   <img src="${station.featuredImage}" alt="${station.cityName}" />
    ```
-3. Apri l'indirizzo mostrato nel terminale (solitamente `http://localhost:5173`).
+
+---
+
+## 🚀 Avviare in locale
+
+```bash
+npm install       # solo la prima volta
+npm run dev       # server locale su http://localhost:5173
+npm run preview   # anteprima della versione di produzione
+```
 
 ---
 
 ## 📦 Deploy su Vercel
 
-Il progetto è predisposto per essere distribuito su **Vercel** come sito statico a zero configurazione.
+Il progetto è configurato per il deploy statico automatico. Ogni push su `main` aggiorna il sito.
 
-Per effettuare il build manuale e testare la versione di produzione locale:
 ```bash
-npm run build
+# Assicurati che le modifiche siano committate:
+git add .
+git commit -m "update: nuove foto e testi"
+git push origin main
 ```
-Verrà generata una cartella `dist/` pronta per essere pubblicata.
+
+Vercel rileva il push e pubblica automaticamente la nuova versione in ~30 secondi.
+
+**Build command:** `npm run build` | **Output dir:** `dist` (configurati automaticamente da Vercel)
