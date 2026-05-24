@@ -149,5 +149,12 @@ export const config = {
         "assets/munich-05.jpg"
       ]
     }
-  ]
+  ],
+
+  // ─── TRANSITIONS ──────────────────────────────────────────────────────────
+  // Defines the transition styles between major sections
+  transitions: {
+    heroToTimeline: "curtainReveal", // Hero sticks, Timeline slides up over it
+    galleryToTimeline: "darkSeparator" // Dark spacer div between Gallery and Timeline
+  }
 };

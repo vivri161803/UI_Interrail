@@ -1,7 +1,50 @@
 /* styles/components/timeline.css — Serpentine Route Timeline */
 
 /* ── Section ─────────────────────────────────────────────────────── */
-.timeline-section { background-color: var(--bg-secondary); }
+.timeline-section { 
+  background-color: var(--bg-secondary); 
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+}
+
+/* ── Bokeh Background Effect ─────────────────────────────────────── */
+.bokeh-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bokeh-light {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  background: radial-gradient(circle, rgba(253,186,116,0.6) 0%, rgba(249,115,22,0.1) 70%, transparent 100%);
+}
+
+.light-1 { width: 300px; height: 300px; top: 10%; left: -20%; animation: bokehSlide 20s infinite linear; }
+.light-2 { width: 200px; height: 200px; top: 25%; right: -20%; animation: bokehSlideReverse 25s infinite linear; background: radial-gradient(circle, rgba(250,204,21,0.5) 0%, rgba(202,138,4,0.1) 70%, transparent 100%); }
+.light-3 { width: 400px; height: 400px; top: 50%; left: -30%; animation: bokehSlide 35s infinite linear; }
+.light-4 { width: 250px; height: 250px; top: 75%; right: -20%; animation: bokehSlideReverse 22s infinite linear; background: radial-gradient(circle, rgba(250,204,21,0.5) 0%, rgba(202,138,4,0.1) 70%, transparent 100%); }
+.light-5 { width: 350px; height: 350px; top: 90%; left: -10%; animation: bokehSlide 28s infinite linear; }
+
+@keyframes bokehSlide {
+  0% { transform: translateX(-30vw); opacity: 0; }
+  20% { opacity: 0.8; }
+  80% { opacity: 0.8; }
+  100% { transform: translateX(120vw); opacity: 0; }
+}
+
+@keyframes bokehSlideReverse {
+  0% { transform: translateX(30vw); opacity: 0; }
+  20% { opacity: 0.8; }
+  80% { opacity: 0.8; }
+  100% { transform: translateX(-120vw); opacity: 0; }
+}
 
 /* ── SVG Track Container ─────────────────────────────────────────── */
 .timeline-container {

@@ -1,7 +1,9 @@
 /* styles/components/hero.css — Hero Section Styles */
 
 .hero {
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 1;
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -41,14 +43,12 @@
   margin-bottom: var(--spacing-md);
   color: var(--text-primary);
   text-transform: uppercase;
-  /* overflow hidden ensures chars don't bleed outside during slide-in */
-  overflow: hidden;
+  display: inline-block; /* Keeps bounding box tight for Flip animation */
 }
 
-/* char-wrapper acts as the mask; clip happens here */
+/* char-wrapper acts as a grouping container */
 .char-wrapper {
   display: inline-block;
-  overflow: hidden;
   vertical-align: bottom;
 }
 
@@ -109,3 +109,76 @@
   50%  { top: 16px; opacity: 0; }
   100% { top: 6px;  opacity: 1; }
 }
+
+/* ── Top Navbar (destination box for Flip) ────────────────────────── */
+.top-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--spacing-lg);
+  z-index: 100;
+  pointer-events: none;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              backdrop-filter 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              border-color 0.4s ease;
+}
+
+.top-navbar.scrolled {
+  background: rgba(11, 15, 25, 0.7);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.logo-target {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  pointer-events: auto;
+}
+
+/* Stable wrapper inside Hero content to prevent layout shifts */
+.hero-title-container {
+  min-height: clamp(3rem, 11vw, 7rem);
+  margin-bottom: var(--spacing-md);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* Smaller title styles when reparented into header */
+.title-split.logo-small {
+  font-size: 1.5rem;
+  margin-bottom: 0;
+  letter-spacing: -0.01em;
+  text-align: left;
+  line-height: 1.0;
+  width: auto;
+}
+
+/* Draggable spin-year style */
+#spin-year {
+  display: inline-block;
+  cursor: grab;
+  color: var(--accent-secondary);
+  user-select: none;
+  touch-action: none;
+  transition: color 0.3s ease;
+}
+
+#spin-year:hover {
+  color: var(--accent-primary);
+}
+
+#spin-year:active {
+  cursor: grabbing;
+}
+

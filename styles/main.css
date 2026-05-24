@@ -124,3 +124,12 @@ a {
   margin: var(--spacing-sm) auto 0;
   border-radius: var(--border-radius-sm);
 }
+
+/* ── Transitions ─────────────────────────────────────────────────── */
+.dark-separator {
+  position: relative;
+  width: 100%;
+  height: 40vh; /* Configurable 30vh - 50vh */
+  background: linear-gradient(to bottom, var(--bg-secondary) 0%, #000000 50%, var(--bg-primary) 100%);
+  z-index: 10;
+}

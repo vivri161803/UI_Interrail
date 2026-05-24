@@ -3,6 +3,7 @@
 /* ── Outer wrapper (this is what GSAP pins) ──────────────────────── */
 .horizontal-gallery-outer {
   position: relative;
+  z-index: 10;
   width: 100%;
   height: 100vh;
   overflow: hidden;

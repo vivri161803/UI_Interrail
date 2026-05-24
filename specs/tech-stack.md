@@ -10,6 +10,9 @@
   - Loaded via official CDN links (`gsap.min.js`).
   - **GSAP ScrollTrigger:** For scroll-bound timeline animations (`ScrollTrigger.min.js`).
   - **Text Reveal:** Custom vanilla JS logic to split text into `span` elements (letters/words) to achieve staggered letter reveals, bypassing the premium GSAP SplitText plugin.
+- **Three.js:**
+  - Installed via `npm install three`.
+  - Used for 3D background effects (particle systems) with performance optimisations (IntersectionObserver and mobile fallbacks).
 - **Typography:**
   - Google Fonts: `Inter` or `Outfit` loaded via CDN `<link>` tags.
 - **Iconography:**

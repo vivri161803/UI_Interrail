@@ -1,42 +1,75 @@
 // animations/heroAnimations.js
-// Train-themed kinetic typography — letters slide in from right like arriving train cars
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Draggable } from "gsap/Draggable";
+
+gsap.registerPlugin(ScrollTrigger, Draggable);
 
 export function initHeroAnimations() {
-  const chars    = document.querySelectorAll('#hero-title .char');
+  const title = document.getElementById('hero-title');
+  const target = document.getElementById('logo-target');
+  const originalContainer = document.querySelector('.hero-title-container');
   const subtitle = document.getElementById('hero-subtitle');
 
-  if (chars.length === 0) return;
+  if (!title) return;
 
-  // ── Set initial "train approaching" state ─────────────────────────
-  // Letters start far off-screen to the right, tilted forward (skewX negative),
-  // and invisible — as if the train is still moving at speed.
-  gsap.set(chars, {
-    x: 160,          // off to the right
-    skewX: -30,      // tilt: forward momentum
-    opacity: 0
+  const chars = title.querySelectorAll('.char');
+
+  // ── 1. Navbar Scroll effect ──
+  ScrollTrigger.create({
+    trigger: "#itinerary",
+    start: "top 90%",
+    end: "top 10%",
+    scrub: true,
+    onUpdate: (self) => {
+      const navbar = document.querySelector('.top-navbar');
+      if (navbar) {
+        if (self.progress > 0.05) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+      }
+    }
   });
 
-  if (subtitle) gsap.set(subtitle, { y: 22, opacity: 0 });
+  ScrollTrigger.refresh();
 
-  // ── Timeline: train brakes into station ───────────────────────────
-  const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+  // ── 2. Entrance Animations (staggered left-to-right) ──
+  if (chars.length > 0) {
+    gsap.set(chars, {
+      x: -60,
+      opacity: 0
+    });
 
-  tl.to(chars, {
-    x: 0,            // slides into position
-    skewX: 0,        // straightens out as it brakes
-    opacity: 1,
-    duration: 1.1,
-    stagger: 0.05,   // each "car" couples in slightly after the previous
-  });
+    if (subtitle) gsap.set(subtitle, { y: 22, opacity: 0 });
 
-  // Subtitle fades up once the title has landed
-  if (subtitle) {
-    tl.to(subtitle, {
-      y: 0,
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+    tl.to(chars, {
+      x: 0,
       opacity: 1,
-      duration: 0.9,
-      ease: 'power3.out'
-    }, '-=0.6');
+      duration: 1.2,
+      stagger: 0.06
+    });
+
+    if (subtitle) {
+      tl.to(subtitle, {
+        y: 0,
+        opacity: 1,
+        duration: 1.0
+      }, '-=0.4');
+    }
+
+    // ── 3. Initialize Draggable on "#spin-year" ──
+    tl.add(() => {
+      if (document.getElementById('spin-year')) {
+        Draggable.create("#spin-year", {
+          type: "rotation",
+          inertia: false
+        });
+      }
+    });
   }
 }
+
