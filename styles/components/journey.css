@@ -500,7 +500,7 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: rgba(28, 32, 38, 0.6);
+  background: rgba(28, 32, 38, 0.75);
   backdrop-filter: blur(4px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #ffffff;
@@ -512,14 +512,13 @@
   font-size: 14px;
   line-height: 1;
   padding: 0;
-  opacity: 0;
-  transform: scale(0.9);
-  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  opacity: 0.8; /* Visibile di default per chiarezza */
+  transform: scale(1);
+  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 }
 
 .photo-item:hover .delete-photo-btn {
   opacity: 1;
-  transform: scale(1);
 }
 
 .delete-photo-btn:hover {
