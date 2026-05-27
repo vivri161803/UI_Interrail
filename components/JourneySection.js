@@ -2,14 +2,9 @@
 // Builds the horizontal Z-pattern journey: outbound + return tracks,
 // station cards with photo dialog + upload, and connection pills.
 import { config } from '../config.js';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../utils/supabase.js';
 
 const STORAGE_KEY = 'interrail_photos_';
-
-// Initialize Supabase Client
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
-const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey) : null;
 const BUCKET_NAME = 'photos';
 
 /* ─── ENTRY POINT ─────────────────────────────────────────────────────────── */
