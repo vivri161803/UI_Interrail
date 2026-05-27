@@ -2,8 +2,15 @@
 // Builds the horizontal Z-pattern journey: outbound + return tracks,
 // station cards with photo dialog + upload, and connection pills.
 import { config } from '../config.js';
+import { createClient } from '@supabase/supabase-js';
 
 const STORAGE_KEY = 'interrail_photos_';
+
+// Initialize Supabase Client
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
+const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey) : null;
+const BUCKET_NAME = 'photos';
 
 /* ─── ENTRY POINT ─────────────────────────────────────────────────────────── */
 export function initJourneySection() {
@@ -214,7 +221,7 @@ function createGalleryDialog(station, album, maxPhotos) {
           `).join('')}
         </div>
 
-        <!-- User-uploaded photos (from localStorage) will be injected here by JS -->
+        <!-- User-uploaded photos (from Supabase/localStorage) will be injected here by JS -->
         <div id="uploaded-grid-${station.id}"></div>
 
         <!-- Upload zone -->
@@ -299,15 +306,57 @@ function createGalleryDialog(station, album, maxPhotos) {
   return dialog;
 }
 
-/* ─── PHOTO PERSISTENCE (localStorage) ───────────────────────────────────── */
-/**
- * Converts uploaded files to base64 and saves them to localStorage.
- */
-function handlePhotoUpload(cityId, files, dialog) {
-  const stored = getStoredPhotos(cityId);
+/* ─── PHOTO PERSISTENCE (Supabase + localStorage fallback) ───────────────── */
 
-  Array.from(files).forEach(file => {
-    if (!file.type.startsWith('image/')) return;
+/**
+ * Helper to check if Supabase is available.
+ */
+function isSupabaseAvailable() {
+  return !!supabase;
+}
+
+/**
+ * Converts files and uploads them. Uses Supabase if available, otherwise falls back to localStorage.
+ */
+async function handlePhotoUpload(cityId, files, dialog) {
+  const imageFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+  if (imageFiles.length === 0) return;
+
+  if (isSupabaseAvailable()) {
+    let hasUploadErrors = false;
+    for (const file of imageFiles) {
+      const extension = file.name.split('.').pop();
+      const uniqueName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${extension}`;
+      const filePath = `${cityId}/${uniqueName}`;
+
+      try {
+        const { error } = await supabase.storage.from(BUCKET_NAME).upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+        if (error) {
+          console.warn('[JourneySection] Supabase upload error:', error);
+          hasUploadErrors = true;
+        }
+      } catch (err) {
+        console.warn('[JourneySection] Supabase upload failed:', err);
+        hasUploadErrors = true;
+      }
+    }
+
+    if (!hasUploadErrors) {
+      await loadStoredPhotos(cityId, dialog);
+      return;
+    }
+    console.log('[JourneySection] Falling back to localStorage upload due to Supabase errors');
+  }
+
+  // Fallback to localStorage
+  const stored = getStoredPhotos(cityId);
+  let filesProcessed = 0;
+
+  imageFiles.forEach(file => {
     const reader = new FileReader();
     reader.onload = (e) => {
       const base64 = e.target.result;
@@ -317,21 +366,89 @@ function handlePhotoUpload(cityId, files, dialog) {
       } catch (err) {
         console.warn('[JourneySection] localStorage quota exceeded:', err);
       }
-      appendPhotoToGrid(cityId, base64, dialog);
+      
+      filesProcessed++;
+      if (filesProcessed === imageFiles.length) {
+        loadStoredPhotos(cityId, dialog);
+      }
     };
     reader.readAsDataURL(file);
   });
 }
 
 /**
- * Loads user-uploaded photos from localStorage and renders them.
+ * Loads user-uploaded photos from Supabase (or localStorage fallback) and renders them.
  */
-function loadStoredPhotos(cityId, dialog) {
-  const stored = getStoredPhotos(cityId);
+async function loadStoredPhotos(cityId, dialog) {
   const uploadedGrid = dialog.querySelector(`#uploaded-grid-${cityId}`);
   if (!uploadedGrid) return;
   uploadedGrid.innerHTML = ''; // clear before reload
-  stored.forEach(base64 => appendPhotoToGrid(cityId, base64, dialog));
+
+  let photos = [];
+  let isUsingSupabase = false;
+
+  if (isSupabaseAvailable()) {
+    try {
+      const { data, error } = await supabase.storage.from(BUCKET_NAME).list(cityId, {
+        sortBy: { column: 'created_at', order: 'desc' }
+      });
+
+      if (error) {
+        console.warn('[JourneySection] Supabase list error, falling back to localStorage:', error);
+      } else if (data) {
+        isUsingSupabase = true;
+        photos = data.map(file => {
+          const filePath = `${cityId}/${file.name}`;
+          const { data: urlData } = supabase.storage.from(BUCKET_NAME).getPublicUrl(filePath);
+          return {
+            src: urlData.publicUrl,
+            storagePath: filePath
+          };
+        });
+      }
+    } catch (err) {
+      console.warn('[JourneySection] Supabase list failed, falling back to localStorage:', err);
+    }
+  }
+
+  // Fallback if Supabase list failed or is unavailable
+  if (!isUsingSupabase) {
+    const localPhotos = getStoredPhotos(cityId);
+    photos = localPhotos.map(base64 => ({
+      src: base64,
+      storagePath: null
+    }));
+  }
+
+  // Manage header/clear button
+  let headerEl = dialog.querySelector(`#uploaded-header-${cityId}`);
+  if (photos.length > 0) {
+    if (!headerEl) {
+      headerEl = document.createElement('div');
+      headerEl.id = `uploaded-header-${cityId}`;
+      headerEl.className = 'uploaded-header';
+      headerEl.innerHTML = `
+        <h4 class="uploaded-title">I tuoi caricamenti</h4>
+        <button class="btn-clear-all" data-action="clear-all" data-city-id="${cityId}">
+          Rimuovi tutte
+        </button>
+      `;
+      uploadedGrid.parentNode.insertBefore(headerEl, uploadedGrid);
+
+      // Wire clear all button
+      headerEl.querySelector('[data-action="clear-all"]').addEventListener('click', async () => {
+        if (confirm('Sei sicuro di voler rimuovere tutte le foto caricate per questa città?')) {
+          await clearAllUploadedPhotos(cityId, dialog, photos);
+        }
+      });
+    }
+  } else {
+    if (headerEl) {
+      headerEl.remove();
+    }
+  }
+
+  photos.forEach(photo => appendPhotoToGrid(cityId, photo.src, photo.storagePath, dialog));
 }
 
 /**
@@ -347,7 +464,7 @@ function getStoredPhotos(cityId) {
 /**
  * Appends a single photo (base64) to the uploaded grid.
  */
-function appendPhotoToGrid(cityId, src, dialog) {
+function appendPhotoToGrid(cityId, src, storagePath, dialog) {
   const grid = dialog.querySelector(`#uploaded-grid-${cityId}`);
   if (!grid) return;
 
@@ -360,8 +477,88 @@ function appendPhotoToGrid(cityId, src, dialog) {
   const item = document.createElement('div');
   item.className = 'photo-item';
   item.setAttribute('role', 'listitem');
-  item.innerHTML = `<img src="${src}" alt="Uploaded photo" loading="lazy" />`;
+  item.innerHTML = `
+    <img src="${src}" alt="Uploaded photo" loading="lazy" />
+    <button class="delete-photo-btn" aria-label="Rimuovi foto" title="Rimuovi foto">
+      &times;
+    </button>
+  `;
+
+  // Wire delete button
+  const deleteBtn = item.querySelector('.delete-photo-btn');
+  deleteBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    await removeSinglePhoto(cityId, src, storagePath, item, dialog);
+  });
+
   grid.appendChild(item);
+}
+
+/**
+ * Removes a single photo from localStorage and the UI.
+ */
+async function removeSinglePhoto(cityId, src, storagePath, itemElement, dialog) {
+  if (storagePath && isSupabaseAvailable()) {
+    try {
+      const { error } = await supabase.storage.from(BUCKET_NAME).remove([storagePath]);
+      if (error) {
+        console.warn('[JourneySection] Supabase delete error:', error);
+      } else {
+        await loadStoredPhotos(cityId, dialog);
+        return;
+      }
+    } catch (err) {
+      console.warn('[JourneySection] Supabase delete failed:', err);
+    }
+  }
+
+  const stored = getStoredPhotos(cityId);
+  const index = stored.indexOf(src);
+  if (index > -1) {
+    stored.splice(index, 1);
+    try {
+      if (stored.length === 0) {
+        localStorage.removeItem(STORAGE_KEY + cityId);
+      } else {
+        localStorage.setItem(STORAGE_KEY + cityId, JSON.stringify(stored));
+      }
+    } catch (err) {
+      console.warn('[JourneySection] Error updating localStorage:', err);
+    }
+  }
+  await loadStoredPhotos(cityId, dialog);
+}
+
+/**
+ * Clears all uploaded photos for a city from localStorage and the UI.
+ */
+async function clearAllUploadedPhotos(cityId, dialog, photos) {
+  if (isSupabaseAvailable()) {
+    const pathsToDelete = photos
+      .map(p => p.storagePath)
+      .filter(path => !!path);
+
+    if (pathsToDelete.length > 0) {
+      try {
+        const { error } = await supabase.storage.from(BUCKET_NAME).remove(pathsToDelete);
+        if (error) {
+          console.warn('[JourneySection] Supabase clear errors:', error);
+        } else {
+          await loadStoredPhotos(cityId, dialog);
+          return;
+        }
+      } catch (err) {
+        console.warn('[JourneySection] Supabase clear failed:', err);
+      }
+    }
+  }
+
+  try {
+    localStorage.removeItem(STORAGE_KEY + cityId);
+  } catch (err) {
+    console.warn('[JourneySection] Error clearing localStorage:', err);
+  }
+  await loadStoredPhotos(cityId, dialog);
 }
 
 /* ─── SVG ICON FACTORY ────────────────────────────────────────────────────── */

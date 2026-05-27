@@ -450,6 +450,91 @@
   color: var(--color-text-dim);
 }
 
+/* ─── UPLOADED PHOTOS STYLING ────────────────────────── */
+.uploaded-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--sp-6);
+  margin-bottom: var(--sp-3);
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--color-border-dim);
+}
+
+.uploaded-title {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.btn-clear-all {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-1) var(--sp-3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-clear-all:hover {
+  border-color: #E05C5C;
+  color: #E05C5C;
+  background: rgba(224, 92, 92, 0.05);
+}
+
+.photo-item {
+  position: relative;
+}
+
+.delete-photo-btn {
+  position: absolute;
+  top: var(--sp-2);
+  right: var(--sp-2);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(28, 32, 38, 0.6);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.photo-item:hover .delete-photo-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.delete-photo-btn:hover {
+  background: #E05C5C;
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.delete-photo-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  opacity: 1;
+  transform: scale(1);
+}
+
 /* ─── MOBILE ─────────────────────────────────────────── */
 @media (max-width: 768px) {
   .journey-viewport { position: relative; height: auto; overflow: visible; }
@@ -464,4 +549,8 @@
   .journey-track.outbound .station-card:first-child,
   .journey-track.return .station-card:last-child { margin: 0 !important; }
   .journey-rail { display: none; }
+  .delete-photo-btn {
+    opacity: 0.9;
+    transform: scale(1);
+  }
 }
