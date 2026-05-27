@@ -1,0 +1,39 @@
+1### 1. L'Evoluzione del Tech Stack (100% Gratuito)
+
+Per implementare il "fil rouge" e lo scroll orizzontale, manterremo GSAP e ScrollTrigger, ma integreremo alcuni elementi:
+
+* **GSAP MotionPathPlugin (Gratuito):** È il tassello mancante. Mentre con il trucco dello `stroke-dashoffset` disegni la linea (i binari), il `MotionPathPlugin` ti permette di agganciare un elemento DOM o SVG (la "pallina" o l'icona di un treno) a quel tracciato esatto. Sincronizzandolo con ScrollTrigger, il treno seguirà perfettamente i binari in base allo scroll.
+* **Lenis Scroll (Raccomandato):** Quando si creano layout con scroll orizzontale "finto" (orizzontale su scroll verticale), lo scroll nativo del browser può risultare a scatti. Lenis (di Studio Freight) è una libreria vanilla leggerissima e gratuita per lo smooth scrolling che si integra alla perfezione con ScrollTrigger, rendendo il movimento del treno e l'apparizione delle carte burroso e fluido.
+* **HTML5 `<dialog>` Element:** Per le gallerie fotografiche specifiche delle città, dimentica librerie pesanti. Usa il tag nativo `<dialog>` di HTML5. Ti dà un modal accessibile, con backdrop e gestione del focus integrati, gestibile con due righe di JavaScript vanilla (`dialog.showModal()`).
+
+### 2. Architettura UX/UI: Il Viaggio Orizzontale
+
+Unire *The Journey* e *Gallery* in un flusso orizzontale è una scelta di design audace. Ecco come risolverla tecnicamente:
+
+* **Il Container Pinnato:** Creerai una macro-sezione (es. `<section id="journey-scroll">`) larga quanto basta per contenere tutte le stazioni affiancate. Con ScrollTrigger, "pinnerai" (bloccherai) questa sezione sullo schermo.
+* **Andata e Ritorno (Z-Pattern Scroll):** * Mentre l'utente scrolla verso il basso, trasliamo il container verso sinistra (L -> R) coprendo l'andata verso il Nord (es. Firenze -> Copenaghen -> Oslo -> Stoccolma).
+* Arrivati alla fine dell'andata, il tracciato scende verticalmente. In quel momento si sblocca lo scroll orizzontale, si fa uno scroll verticale breve, e poi si pinna un *secondo* container orizzontale che traslerà verso destra (R -> L) per il ritorno.
+
+
+* **Il Fil Rouge Globale:** L'SVG del tracciato dovrà essere posizionato in `position: absolute` o `fixed` nel background, coprendo l'intera altezza/larghezza del documento. Calcolare i punti esatti di questo SVG può essere tedioso a mano: ti consiglio di disegnarlo su Figma o Illustrator e poi esportare il tag `<path>`.
+
+### 3. Anatomia delle Stazioni e dei Collegamenti
+
+Le informazioni che vuoi inserire sono perfette, ma rischiano di ingombrare la UI se non gerarchizzate bene.
+
+**Per le Station Card:**
+
+* Mantieni il design a colonna o a griglia asimmetrica.
+* Usa icone minimali in formato SVG per i metadati (un orologio per la durata, un letto per l'ostello, una moneta per il costo).
+* Il pulsante per la galleria fotografica ("Vedi Ricordi" o l'icona di una macchina fotografica) dovrebbe essere un elemento secondario (un *ghost button*) che apre il modal `<dialog>`.
+
+**Per i collegamenti (i binari tra le stazioni):**
+
+* **Tooltips sul tracciato:** Inserisci le info del treno (orari e costi) all'interno di piccoli "pill" ovali posizionati esattamente *sopra* la linea di collegamento tra due stazioni.
+* **Animazione:** Fai apparire questi badge in fade-in solo quando la pallina/treno ci passa sopra. Dà un senso di progressione incredibile.
+
+### 4. Cosa aggiungerei e migliorerei?
+
+Visto che questo è un diario di viaggio che servirà non solo come portfolio ma anche come strumento reale per la vostra logistica, ecco qualche spinta in più:
+
+* **Micro-interazioni atmosferiche:** Quando arrivate nelle stazioni più a nord (Oslo, Stoccolma), potresti far cambiare dinamicamente la palette di colori del sito tramite le variabili CSS, virando dai colori caldi della partenza a toni più algidi e freddi per rispecchiare le "cold nights" del Nord Europa.

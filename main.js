@@ -3,25 +3,30 @@ import './styles/main.css';
 
 // Component CSS
 import './styles/components/hero.css';
-import './styles/components/timeline.css';
-import './styles/components/gallery.css';
+import './styles/components/journey.css';
+import './styles/components/useful-links.css';
 import './styles/components/footer.css';
 
 // Component Logic
-import { initHeroSection }    from './components/HeroSection.js';
-import { initRouteTimeline }  from './components/RouteTimeline.js';
-import { initGallerySection } from './components/GallerySection.js';
-import { initFooterSection }  from './components/FooterSection.js';
+import { initHeroSection }         from './components/HeroSection.js';
+import { initJourneySection }      from './components/JourneySection.js';
+import { initUsefulLinksSection }  from './components/UsefulLinksSection.js';
+import { initFooterSection }       from './components/FooterSection.js';
+import { initParticleGrid }        from './components/ParticleGrid.js';
 
 // Animations
-import { initGlobalAnimations } from './animations/mainAnimations.js';
+import { initGlobalAnimations }    from './animations/mainAnimations.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  // 1. Particle grid background (canvas)
+  initParticleGrid();
+
+  // 2. Hydrate all components
   initHeroSection();
-  initRouteTimeline();
-  initGallerySection();
+  initJourneySection();
+  initUsefulLinksSection();
   initFooterSection();
 
-  // Animations always last — DOM must be fully hydrated first
+  // 3. Start all animations (Lenis + GSAP + ScrollTrigger)
   initGlobalAnimations();
 });

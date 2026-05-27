@@ -1,135 +1,100 @@
-/* styles/main.css - Global Styles & Design System */
-
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap');
+/* styles/main.css — Nordic Light · Scandinavian Elegance */
 
 :root {
-  /* Harmonious Cold Nordic Palette */
-  --bg-primary: #0b0f19;      /* Deep midnight blue-gray */
-  --bg-secondary: #121824;    /* Slightly lighter dark background */
-  --bg-tertiary: #1b2336;     /* Elevated surface elements */
-  
-  --text-primary: #f3f4f6;    /* Crisp near-white */
-  --text-secondary: #9ca3af;  /* Muted cool gray */
-  --text-muted: #6b7280;      /* Darker gray for placeholders/labels */
-  
-  --accent-primary: #3b82f6;  /* Arctic blue */
-  --accent-secondary: #60a5fa;/* Muted light blue */
-  --accent-glow: rgba(59, 130, 246, 0.15); /* Soft blue glow */
-  
-  /* Layout & Spacing System */
-  --spacing-xs: 0.5rem;
-  --spacing-sm: 1rem;
-  --spacing-md: 1.5rem;
-  --spacing-lg: 2rem;
-  --spacing-xl: 3rem;
-  --spacing-2xl: 5rem;
-  
-  /* Typography Scale */
-  --font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-xs: 0.75rem;
-  --font-sm: 0.875rem;
-  --font-md: 1rem;
-  --font-lg: 1.25rem;
-  --font-xl: 1.5rem;
-  --font-2xl: 2.25rem;
-  --font-3xl: 3.5rem;
-  --font-huge: 5rem;
-  
-  /* Borders & Shadows */
-  --border-radius-sm: 6px;
-  --border-radius-md: 12px;
-  --border-radius-lg: 24px;
-  --border-color: rgba(255, 255, 255, 0.08);
-  --box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
-  --glass-effect: backdrop-filter: blur(12px) saturate(180%);
+  /* Background — snow white with a hint of warmth */
+  --color-bg:         #F8F6F1;
+  --color-surface:    #FFFFFF;
+  --color-surface-2:  #F0EDE6;
+  --color-border:     #DED8CC;
+  --color-border-dim: rgba(0, 0, 0, 0.04);
+
+  /* Accent — fjord blue */
+  --color-accent:     #3D7A9E;
+  --color-accent-alt: #5A9BBE;
+  --color-accent-glow: rgba(61, 122, 158, 0.10);
+
+  /* Text */
+  --color-text:       #1C2026;
+  --color-text-muted: #5A6370;
+  --color-text-dim:   #9CA3AD;
+
+  /* Typography */
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body:    'Chivo', system-ui, sans-serif;
+  --font-mono:    'Chivo Mono', 'Courier New', monospace;
+
+  /* Type scale */
+  --text-xs: 0.6875rem; --text-sm: 0.8125rem; --text-base: 1rem;
+  --text-lg: 1.125rem; --text-xl: 1.375rem; --text-2xl: 1.75rem;
+  --text-3xl: 2.5rem; --text-hero: clamp(3.5rem, 11vw, 7.5rem);
+
+  /* Spacing */
+  --sp-1: 0.25rem; --sp-2: 0.5rem; --sp-3: 0.75rem; --sp-4: 1rem;
+  --sp-6: 1.5rem; --sp-8: 2rem; --sp-12: 3rem; --sp-16: 4rem; --sp-24: 6rem;
+
+  /* Radius */
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 16px; --radius-full: 9999px;
+
+  /* Shadows — soft, warm */
+  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-md:  0 4px 16px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-lg:  0 12px 40px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
+
+  /* Z-index */
+  --z-bg: 0; --z-content: 10; --z-navbar: 100; --z-modal: 200;
 }
 
-/* Reset & Base Styles */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* ─── RESET ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* ─── BASE ──────────────────────────────────────────── */
 html {
-  scroll-behavior: smooth;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
   font-size: 16px;
+  font-weight: 300;
+  line-height: 1.65;
   overflow-x: hidden;
 }
 
 body {
   width: 100%;
   min-height: 100vh;
-  line-height: 1.6;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  position: relative;
 }
 
-/* Base Scrollbar Styling */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg-primary);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--bg-tertiary);
-  border-radius: var(--border-radius-sm);
-  border: 2px solid var(--bg-primary);
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-primary);
-}
+/* ─── SCROLLBAR ─────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
 
-/* Layout Utilities */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-md);
-}
+/* ─── TYPOGRAPHY ────────────────────────────────────── */
+h1, h2, h3, h4 { line-height: 1.15; font-weight: 400; }
+a { color: inherit; text-decoration: none; }
 
-.section-padding {
-  padding: var(--spacing-2xl) 0;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
+/* ─── LAYOUT ────────────────────────────────────────── */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 var(--sp-6); }
 
 .section-title {
-  font-size: var(--font-2xl);
-  text-align: center;
-  margin-bottom: var(--spacing-2xl);
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
-  position: relative;
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+  margin-bottom: var(--sp-12);
 }
 
-.section-title::after {
-  content: '';
-  display: block;
-  width: 40px;
-  height: 2px;
-  background-color: var(--accent-primary);
-  margin: var(--spacing-sm) auto 0;
-  border-radius: var(--border-radius-sm);
+/* ─── PARTICLE CANVAS ────────────────────────────────── */
+#particle-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: var(--z-bg);
+  pointer-events: none;
 }
 
-/* ── Transitions ─────────────────────────────────────────────────── */
-.dark-separator {
-  position: relative;
-  width: 100%;
-  height: 40vh; /* Configurable 30vh - 50vh */
-  background: linear-gradient(to bottom, var(--bg-secondary) 0%, #000000 50%, var(--bg-primary) 100%);
-  z-index: 10;
-}
+#app { position: relative; }

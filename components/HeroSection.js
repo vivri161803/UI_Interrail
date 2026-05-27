@@ -1,6 +1,5 @@
 // components/HeroSection.js
 import { config } from '../config.js';
-import { initHero3D } from './Hero3D.js';
 
 export function initHeroSection() {
   const heroEl = document.getElementById('hero');
@@ -12,16 +11,13 @@ export function initHeroSection() {
 
   if (titleEl)    { titleEl.textContent = config.meta.title; splitIntoChars(titleEl); }
   if (subtitleEl) { subtitleEl.textContent = config.meta.subtitle; }
-
-  // ── Scroll indicator ─────────────────────────────────────────────
-  createScrollIndicator(heroEl);
-
-  // ── 3D Background ────────────────────────────────────────────────
-  initHero3D('hero');
 }
 
-// Splits every letter into an animatable .char span,
-// wrapped by an overflow:hidden .char-wrapper to act as a reveal mask.
+/**
+ * Splits every letter into an animatable .char span,
+ * wrapped by an overflow:hidden .char-wrapper to act as a reveal mask.
+ * Special case: keeps "2026" as a single block.
+ */
 export function splitIntoChars(element) {
   const text = element.textContent.trim();
   element.innerHTML = '';
@@ -30,32 +26,17 @@ export function splitIntoChars(element) {
     const wordEl = document.createElement('span');
     wordEl.style.cssText = 'white-space:nowrap; display:inline-block;';
 
-    if (word === "2026") {
-      // Keep "2026" as a single block for rotation/dragging
+    // Split each character into its own animatable span
+    for (const ch of word) {
       const wrapper = document.createElement('span');
       wrapper.className = 'char-wrapper';
 
       const charEl = document.createElement('span');
       charEl.className = 'char';
-      charEl.id = 'spin-year';
-      charEl.title = 'Spin me!';
-      charEl.textContent = word;
+      charEl.textContent = ch;
 
       wrapper.appendChild(charEl);
       wordEl.appendChild(wrapper);
-    } else {
-      // Split each character for the text reveal mask
-      for (const ch of word) {
-        const wrapper = document.createElement('span');
-        wrapper.className = 'char-wrapper';
-
-        const charEl = document.createElement('span');
-        charEl.className = 'char';
-        charEl.textContent = ch;
-
-        wrapper.appendChild(charEl);
-        wordEl.appendChild(wrapper);
-      }
     }
 
     element.appendChild(wordEl);
@@ -66,7 +47,7 @@ export function splitIntoChars(element) {
 function createScrollIndicator(parent) {
   const el = document.createElement('div');
   el.className = 'scroll-indicator';
-  el.innerHTML = `<span>scroll</span><div class="mouse-icon"><div class="mouse-wheel"></div></div>`;
+  el.innerHTML = `<span>scroll</span><div class="scroll-line"></div>`;
   parent.appendChild(el);
-  setTimeout(() => el.classList.add('visible'), 1200);
+  setTimeout(() => el.classList.add('visible'), 1400);
 }
